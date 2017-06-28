@@ -1,6 +1,6 @@
 {
   "apps" : [{
-    "name"        : "endgame",
+    "name"        : "express-lemon",
     "script"      : "server.js",
     "args"        : ["--toto=heya coco", "-d", "1"],
     "watch"       : true,
