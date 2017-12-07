@@ -6,7 +6,7 @@ const jwt                   = require('jsonwebtoken');
 const config                = require(`${basePath}/config/app/`);
 const authStrategies        = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
 const tokenTypes            = require(`${basePath}/app/enums/`).AUTH.TOKEN_TYPES;
-const exceptions            = require(`${basePath}/app/exceptions/`);
+const { NotAuthorized }     = require(`${basePath}/app/utils/apiErrors`);
 
 let instance      = null;
 
@@ -48,7 +48,7 @@ module.exports = class AuthService extends MainService {
     return new Promise((resolve, reject) => {
       return self.jwt.verify(token, self.config.jwt.secret, (err, jwt_payload) => {
         if (err) {
-          reject(new exceptions.NotAuthorized());
+          reject(new NotAuthorized());
         }
         resolve(jwt_payload);
       })
@@ -63,7 +63,7 @@ module.exports = class AuthService extends MainService {
    */
   authenticate(req, strategy) {
     if(!(strategy && req && Object.keys(req) && Object.keys(req).length)) {
-      throw new exceptions.NotAuthorized('auth service failed to authenticate');
+      throw new NotAuthorized('auth service failed to authenticate');
     }
 
     let self = this;
@@ -76,7 +76,7 @@ module.exports = class AuthService extends MainService {
             const token = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
             resolve({ token: token, user: user });
           } else {
-            reject(new exceptions.NotAuthorized('Login info incorrect'));
+            reject(new NotAuthorized('Login info incorrect'));
           }
         }
       })(req);
@@ -94,7 +94,7 @@ module.exports = class AuthService extends MainService {
     let self = this;
 
     if(!req.headers.authorization) {
-      throw new exceptions.NotAuthorized();
+      throw new NotAuthorized();
     }
 
     const token       = req.headers.authorization.split(' ')[1];
@@ -117,7 +117,7 @@ module.exports = class AuthService extends MainService {
           req.user = user;
           return user;
         } else {
-          throw new exceptions.NotAuthorized();
+          throw new NotAuthorized();
         }
       });
   }

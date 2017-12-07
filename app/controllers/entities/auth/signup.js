@@ -1,11 +1,11 @@
 'use strict';
 
-const services    = require(`${basePath}/app/services`);
-const UserService = services.USER;
-const helpers     = require(`${basePath}/app/helpers`);
-const exceptions  = require(`${basePath}/app/exceptions`);
-const DbService   = services.DB_SERVICE;
-const UserModel   = DbService.models().User;
+const services          = require(`${basePath}/app/services`);
+const UserService       = services.USER;
+const helpers           = require(`${basePath}/app/helpers`);
+const { AlreadyExist }  = require(`${basePath}/app/utils/apiErrors`);
+const DbService         = services.DB_SERVICE;
+const UserModel         = DbService.models().User;
 
 
 module.exports = {
@@ -26,7 +26,7 @@ module.exports = {
           let userService = new UserService(signUpData);
           return userService.create(signUpData);
         }
-        throw new exceptions.AlreadyExist('sign up: email already exists');
+        throw new AlreadyExist('sign up: email already exists');
       })
       .then((userCreated) => {
         userCreated = userCreated.toJSON();

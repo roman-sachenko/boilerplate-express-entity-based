@@ -1,6 +1,5 @@
 'use strict';
 
-const exceptions    = require(`${basePath}/app/exceptions`);
 const services      = require(`${basePath}/app/services`);
 const AuthService   = services.AUTH;
 const authService   = new AuthService();

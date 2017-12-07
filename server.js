@@ -4,6 +4,8 @@ const path                = require('path');
 global.basePath           = path.normalize(`${__dirname}`);
 const cluster             = require('cluster');
 const numberOfInstances   = require('os').cpus().length;
+const services            = require(`${basePath}/app/services`);
+const httpLogger          = new services.LOGGER({ dirPathRelative: '/http-logs' });
 
 
 if (cluster.isMaster) {
@@ -30,6 +32,7 @@ function onExit(worker, code, signal) {
 }
 
 function onUncaughtException(err) {
+  httpLogger.log(err, 'error');
   console.log(err);
   process.exit(1);
 }

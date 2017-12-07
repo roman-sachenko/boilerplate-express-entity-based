@@ -9,7 +9,7 @@ require(`${basePath}/app/models/entities/User`);
 const appConfig         = require(`${basePath}/config/app`);
 const services          = require(`${basePath}/app/services`);
 const WorkEnvs          = require(`${basePath}/app/enums`).WORK_ENVS;
-const exceptions        = require(`${basePath}/app/exceptions`);
+const { NotFound }      = require(`${basePath}/app/utils/apiErrors`);
 const customValidators  = require(`${basePath}/app/validators/custom`);
 
 const DbService     = services.DB_SERVICE;
@@ -50,8 +50,15 @@ app
 
 console.log('Hell yeah on port ' + port);
 
+
+
+
+/**
+ * 
+ * Server Handlers
+ */
 function routeNotFoundHandler(req, res, next) {
-  services.RESPONSE.sendErrorResponse(res, new exceptions.NotFound('route not found'));
+  services.RESPONSE.sendErrorResponse(res, new NotFound('route not found'));
 }
 
 function mainErrorHandler(err, req, res, next) {
@@ -60,9 +67,9 @@ function mainErrorHandler(err, req, res, next) {
     error = err;
   } else {
     if(!(req.app.get('env') === WorkEnvs.LOCAL)) {
-      error = 'Ooops, something went wrong';
+      error.message = 'Ooops, something went wrong';
     } else {
-      error = err.stack || err;
+      error.message = err.stack || err;
     }
   }
   httpLogger.log(Object.assign(req, error), 'error');

@@ -1,7 +1,8 @@
 'use strict';
 
-const _           = require('lodash');
-const exceptions  = require(`${basePath}/app/exceptions`);
+const _                 = require('lodash');
+const { BadRequest }    = require(`${basePath}/app/utils/apiErrors/index`);
+
 
 const mainDataValidator = {
 
@@ -22,12 +23,11 @@ const mainDataValidator = {
   handleValidationResult: (dataValidationResultPromise, res, next) => {
     dataValidationResultPromise
       .then((validationResult) => {
-        const validationErrors = validationResult.mapped();
-        if(validationErrors && Object.keys(validationErrors) && Object.keys(validationErrors).length){
-          return next(new exceptions.BadRequest(validationErrors));
+        if(!validationResult.isEmpty()){
+          return next(new BadRequest(JSON.stringify(validationResult.mapped())));
         } 
         return next();
-      })
+      });
   },
 
 };

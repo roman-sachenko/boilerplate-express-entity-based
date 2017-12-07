@@ -5,7 +5,7 @@ const FacebookStrategy    = require('passport-facebook').Strategy;
 const GoogleStrategy      = require('passport-google').Strategy;
 const LocalStrategy       = require('passport-local').Strategy;
 
-const exceptions          = require(`${basePath}/app/exceptions`);
+const { NotAuthorized }   = require(`${basePath}/app/utils/apiErrors`);
 const services            = require(`${basePath}/app/services`);
 const crypto              = new services.CRYPTO();
 const DbService           = services.DB_SERVICE;
@@ -74,7 +74,7 @@ module.exports = {
           if(isMatch) {
             return done(null, userFound);
           }
-          done(new exceptions.NotAuthorized(), false);
+          done(new NotAuthorized(), false);
         })
         .catch(err => {
           return done(err);
