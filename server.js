@@ -30,5 +30,6 @@ function onExit(worker, code, signal) {
 }
 
 function onUncaughtException(err) {
+  console.log(err);
   process.exit(1);
 }

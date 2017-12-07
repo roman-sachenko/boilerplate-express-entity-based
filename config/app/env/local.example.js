@@ -2,7 +2,7 @@
 
 module.exports = {
   db: {
-    connectionString: 'mongodb://localhost/endgame_db'
+    connectionString: 'mongodb://localhost/local_db'
   },
 
   env: {

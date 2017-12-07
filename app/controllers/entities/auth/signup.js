@@ -4,8 +4,8 @@ const services    = require(`${basePath}/app/services`);
 const UserService = services.USER;
 const helpers     = require(`${basePath}/app/helpers`);
 const exceptions  = require(`${basePath}/app/exceptions`);
-const dbService   = services.DB_SERVICE;
-const UserModel   = dbService.models()['User'];
+const DbService   = services.DB_SERVICE;
+const UserModel   = DbService.models().User;
 
 
 module.exports = {
@@ -16,10 +16,10 @@ module.exports = {
    * @param next
    */
   regular: (req, res, next) => {
-    let signUpData    = req.entities.mapped.signUpData;
+    let signUpData = req.entities.mapped.signUpData;
     
     UserModel
-      .findOne({ email: signUpData.email})
+      .findOne({ email: signUpData.email })
       .select('_id')
       .then((searchResult) => {
         if(!helpers.isObjectValid(searchResult)) {

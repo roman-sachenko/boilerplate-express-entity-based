@@ -5,7 +5,9 @@
   "main": "server",
   "scripts": {
     "test": "npm test",
-    "start": "node server.js"
+    "start": "node server.js",
+    "command:create_admin": "node ./commands/user/admin/createAdminUser",
+    "postinstall": "npm run command:create_admin"
   },
   "author": "Roman Sachenko",
   "license": "ISC",
@@ -17,14 +19,19 @@
     "express-session": "^1.15.3",
     "express-validator": "^3.2.0",
     "helmet": "^3.6.1",
+    "joi": "^13.0.2",
     "jsonwebtoken": "^7.4.1",
     "lodash": "^4.17.4",
+    "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "mongoose": "^4.10.4",
+    "nodemon": "^1.12.5",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google": "^0.3.0",
     "passport-local": "^1.0.0",
+    "shelljs": "^0.7.8",
+    "snyk": "^1.54.1",
     "winston": "^2.3.1",
     "winston-daily-rotate-file": "^1.4.6"
   },

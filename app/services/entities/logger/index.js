@@ -9,6 +9,7 @@ const MainService   = require('../main');
 const logProvider   = require('winston');
 const fsProvider    = require('fs');
 const path          = require('path');
+const shell         = require('shelljs');
 require('winston-daily-rotate-file');
 
 
@@ -45,14 +46,12 @@ module.exports = class Logger extends MainService {
       transports: self._logTransports
     });
 
-
-
   }
 
   _dirCreateIfNotExist(dirPath) {
     let self = this;
     if(!self._fsProvider.existsSync(dirPath)) {
-      self._fsProvider.mkdirSync(dirPath);
+      shell.mkdir('-p', dirPath);
     }
     return true;
 
@@ -65,6 +64,5 @@ module.exports = class Logger extends MainService {
     } else {
       self._loggerProvider.info(message);
     }
-
   }
 };

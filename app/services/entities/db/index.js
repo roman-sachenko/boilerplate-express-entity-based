@@ -11,8 +11,8 @@ module.exports = class DbService extends MainService {
   constructor(options) {
     super('DB Service');
     let self = this;
-    self._dvProvider          = dbServiceProvider;
-    self._dvProvider.Promise  = global.Promise;
+    self._dbProvider          = dbServiceProvider;
+    self._dbProvider.Promise  = global.Promise;
     self._options           = options;
     self.connection         = false;
 
@@ -40,9 +40,8 @@ module.exports = class DbService extends MainService {
   }
 
   connect() {
-    let self = this;
-    self.connection = self._dvProvider.createConnection(self._options.connectionString);
-    self._dvProvider.connect(self._options.connectionString, { useMongoClient: true });
-    return self.connection;
+    this.connection = this._dbProvider.createConnection(this._options.connectionString);
+    this._dbProvider.connect(this._options.connectionString, { useMongoClient: true });
+    return this.connection;
   }
 };

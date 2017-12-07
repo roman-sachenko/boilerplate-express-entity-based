@@ -3,8 +3,10 @@
 const _           = require('lodash');
 const exceptions  = require(`${basePath}/app/exceptions`);
 
-var mainDataValidator = {
+const mainDataValidator = {
+
   validateErrorsAsync: (req) => {
+
     return req
       .asyncValidationErrors()
       .catch(handleDataErrors)
@@ -14,16 +16,19 @@ var mainDataValidator = {
   },
 
   validateErrorsSync: (req) => {
-    return req.validationErrors(true);
+    return req.getValidationResult();
   },
 
-  handleValidationResult: (dataValidationError, res, next) => {
-    if(dataValidationError && Object.keys(dataValidationError) && Object.keys(dataValidationError).length){
-      next(new exceptions.BadRequest(dataValidationError));
-    } else {
-      next();
-    }
-  }
+  handleValidationResult: (dataValidationResultPromise, res, next) => {
+    dataValidationResultPromise
+      .then((validationResult) => {
+        const validationErrors = validationResult.mapped();
+        if(validationErrors && Object.keys(validationErrors) && Object.keys(validationErrors).length){
+          return next(new exceptions.BadRequest(validationErrors));
+        } 
+        return next();
+      })
+  },
 
 };
 

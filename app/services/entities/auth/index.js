@@ -73,7 +73,7 @@ module.exports = class AuthService extends MainService {
           reject(err);
         } else {
           if (user) {
-            let token = self.jwt.sign({ email: req.body.email }, self.config.jwt.secret);
+            const token = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
             resolve({ token: token, user: user });
           } else {
             reject(new exceptions.NotAuthorized('Login info incorrect'));
@@ -110,7 +110,7 @@ module.exports = class AuthService extends MainService {
         // if(self.tokenTypes.FACEBOOK === tokenType ) {}
         // or switch
 
-        return self.authEntities['User'].findOne({ email: jwt_payload.email }).select('+role')
+        return self.authEntities['User'].findOne({ _id: jwt_payload.id }).select('+role')
       })
       .then(user => {
         if (user) {

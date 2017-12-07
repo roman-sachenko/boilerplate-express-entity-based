@@ -1,14 +1,14 @@
 'use strict';
 
-const MainService         = require('../main');
-const services            = require(`${basePath}/app/services`);
+const MainService = require('../main');
 
 module.exports = class UserService extends MainService {
   constructor(userData) {
     super('User Service');
-    let CryptoService     = require(`${basePath}/app/services`).CRYPTO;
+    const CryptoService   = require(`${basePath}/app/services`).CRYPTO;
     this._userProvider    = require(`${basePath}/app/services`).DB_SERVICE.models()['User'];
     this._userData        = userData;
+
     this._encodeService   = new CryptoService();
   }
 
@@ -18,7 +18,7 @@ module.exports = class UserService extends MainService {
       .encode(self._userData.password)
       .then((encryptedPassword) => {
         self._userData.password = encryptedPassword;
-        return new self._userProvider(self._userData);
+        return new self._userProvider(self._userData).save();
       })
   }
 
