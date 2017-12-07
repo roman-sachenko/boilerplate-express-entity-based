@@ -1,6 +1,22 @@
 # Express-Lemon #
 
-Entity based Express structure.
+Initial API NodeJS Architecture Set based on ExpressJS Framework. 
+The main idea is to split main functionality logically to a set of middlewares:
+
+- data validators
+- access control
+- entity loaders
+- data mappers
+
+Contains the following list of services by default:
+
+- authentication service (sign up, sing in)
+- database service (MongoDB)
+- log service
+
+Commands:
+
+- admin creation script 
 
 ## Requirements
 
