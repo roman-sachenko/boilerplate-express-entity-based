@@ -1,7 +1,7 @@
 'use strict';
 
-const _                 = require('lodash');
-const { BadRequest }    = require(`${basePath}/app/utils/apiErrors/index`);
+const _                     = require('lodash');
+const { BadRequest }        = require(`${basePath}/app/utils/apiErrors/index`);
 
 
 const mainDataValidator = {
