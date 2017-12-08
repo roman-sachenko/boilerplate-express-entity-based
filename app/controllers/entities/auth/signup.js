@@ -1,6 +1,6 @@
 'use strict';
 
-const { UserService, DbService } = require(`${basePath}/app/services`);
+const { UserService, DbService, ResponseService } = require(`${basePath}/app/services`);
 
 const helpers           = require(`${basePath}/app/helpers`);
 const { AlreadyExist }  = require(`${basePath}/app/utils/apiErrors`);
@@ -30,7 +30,7 @@ module.exports = {
       .then((userCreated) => {
         userCreated = userCreated.toJSON();
         delete userCreated.password;
-        services.RESPONSE.sendSuccessResponse(res, userCreated);
+        ResponseService.sendSuccessResponse(res, userCreated);
       })
       .catch((err) => {
         next(err);

@@ -8,8 +8,7 @@
     "start": "node server.js",
     "start:staging": "node NODE_ENV=staging server.js",
     "start:production": "node NODE_ENV=production server.js",
-    "command:create_admin": "node ./commands/user/admin/createAdminUser",
-    "postinstall": "npm run command:create_admin"
+    "command:create_admin": "node ./commands/user/admin/createAdminUser"
   },
   "author": "Roman Sachenko",
   "license": "ISC",
