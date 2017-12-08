@@ -3,17 +3,20 @@
 const express   = require('express');
 const appRoute  = express.Router({ strict: true });
 
-require('./entities/main')(appRoute);
-
+/**
+ * Main App Routes (Dummy)
+ */
+appRoute.use('/', require('./entities/main'));
 /**
  * Auth Routes
  */
-require('./entities/auth/signup')(appRoute);
-require('./entities/auth/signin')(appRoute);
-
+appRoute.use('/auth', require('./entities/auth/signup'));
+appRoute.use('/auth', require('./entities/auth/signin'));
 /**
  * User Routes
  */
-require('./entities/user/password')(appRoute);
+appRoute.use('/users', require('./entities/user/main'));
+appRoute.use('/users', require('./entities/user/password'));
+
 
 module.exports = appRoute;

@@ -1,11 +1,14 @@
 'use strict';
 
-const controller  = require(`${basePath}/app/controllers/entities/user/password`);
-const validator   = require(`${basePath}/app/middlewares/dataValidators/entities/user/password`);
-const loader      = require(`${basePath}/app/middlewares/entityLoaders/entities/user/password`);
+const express = require('express');
+const appRoute = express.Router({ strict: true });
 
-module.exports = (router) => {
-  router
-    .post('/users/forgot-password',                 validator.sendForgotToken, controller.sendForgotToken)
-    .post('/users/forgot-password/:forgotToken',    validator.changePassword, loader.changePassword, controller.changePassword)
-};
+const controller = require(`${basePath}/app/controllers/entities/user/password`);
+const validator = require(`${basePath}/app/middlewares/dataValidators/entities/user/password`);
+const loader = require(`${basePath}/app/middlewares/entityLoaders/entities/user/password`);
+
+appRoute.post('/forgot-password', validator.sendForgotToken, controller.sendForgotToken);
+appRoute.post('/forgot-password/:forgotToken', validator.changePassword, loader.changePassword, controller.changePassword);
+
+
+module.exports = appRoute;
