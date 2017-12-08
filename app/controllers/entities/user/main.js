@@ -14,7 +14,7 @@ module.exports = {
 
     return userService.update(req.body)
       .then((deletedUser) => {
-        ResponseService.sendSuccessResponse(res, { user: deletedUser });
+        ResponseService.sendSuccessResponse(res, deletedUser);
       })
       .catch((err) => {
         next(err);
@@ -46,7 +46,7 @@ module.exports = {
 
     return userService.remove()
       .then((deletedUser) => {
-        ResponseService.sendSuccessResponse(res, { user: deletedUser });
+        ResponseService.sendSuccessResponse(res, deletedUser);
       })
       .catch((err) => {
         next(err);
