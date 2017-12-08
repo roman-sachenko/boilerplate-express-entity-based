@@ -1,8 +1,11 @@
 'use strict';
 
-const services      = require(`${basePath}/app/services`);
-const AuthService   = services.AUTH;
+const { AuthService, DbService } = require(`${basePath}/app/services`);
+const { Forbidden } = require(`${basePath}/app/utils/apiErrors`);
+
 const authService   = new AuthService();
+const UserModel     = DbService.models().User;
+
 
 module.exports = {
 
@@ -22,6 +25,9 @@ module.exports = {
   },
 
   isAdmin: (req, res, next) => {
-
+    if(req.user && req.user.role === UserModel.ROLES.ADMIN) {
+      return next();
+    }
+    next(new Forbidden());
   }
 };

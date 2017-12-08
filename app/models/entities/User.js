@@ -1,7 +1,7 @@
 'use strict';
 
 const userEnums     = require(`${basePath}/app/enums`).USER;
-const DbService     = require(`${basePath}/app/services`).DB_SERVICE;
+const { DbService } = require(`${basePath}/app/services`);
 const schema        = require('./schemas/user');
 
 const UserModel = DbService.createModel('User', schema);

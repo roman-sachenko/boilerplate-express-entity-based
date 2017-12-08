@@ -6,15 +6,16 @@ require(`${basePath}/app/services`);
 
 require(`${basePath}/app/models/entities/User`);
 
+const { DbService, ResponseService, LoggerService } = require(`${basePath}/app/services`);
+
 const appConfig         = require(`${basePath}/config/app`);
-const services          = require(`${basePath}/app/services`);
 const WorkEnvs          = require(`${basePath}/app/enums`).WORK_ENVS;
 const { NotFound }      = require(`${basePath}/app/utils/apiErrors`);
 const customValidators  = require(`${basePath}/app/validators/custom`);
 
-const DbService     = services.DB_SERVICE;
+
 const dbService     = new DbService({ connectionString: appConfig.db.connectionString });
-const httpLogger    = new services.LOGGER({ dirPathRelative: '/http-logs'});
+const httpLogger    = new LoggerService({ dirPathRelative: '/http-logs'});
 
 const passport = require(`${basePath}/app/libs/passport`).init(appConfig);
 
@@ -32,7 +33,6 @@ const server            = http.Server(app).listen(port);
 //Establishing DB Connection
 dbService.connect();
 
-
 /**
  * App Middlewares
  */
@@ -42,7 +42,7 @@ app
   .use(passport.initialize())
   .use(helmet())
   .use(expressValidator({
-    customValidators: customValidators
+    customValidators,
   }))
   .use('/api/v1', require('./routes/v1'))
   .use(routeNotFoundHandler)
@@ -58,7 +58,7 @@ console.log('Hell yeah on port ' + port);
  * Server Handlers
  */
 function routeNotFoundHandler(req, res, next) {
-  services.RESPONSE.sendErrorResponse(res, new NotFound('route not found'));
+  ResponseService.sendErrorResponse(res, new NotFound('route not found'));
 }
 
 function mainErrorHandler(err, req, res, next) {
@@ -73,5 +73,5 @@ function mainErrorHandler(err, req, res, next) {
     }
   }
   httpLogger.log(Object.assign(req, error), 'error');
-  services.RESPONSE.sendErrorResponse(res, error);
+  ResponseService.sendErrorResponse(res, error);
 }

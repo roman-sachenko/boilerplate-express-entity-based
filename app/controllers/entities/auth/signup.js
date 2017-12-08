@@ -1,10 +1,9 @@
 'use strict';
 
-const services          = require(`${basePath}/app/services`);
-const UserService       = services.USER;
+const { UserService, DbService } = require(`${basePath}/app/services`);
+
 const helpers           = require(`${basePath}/app/helpers`);
 const { AlreadyExist }  = require(`${basePath}/app/utils/apiErrors`);
-const DbService         = services.DB_SERVICE;
 const UserModel         = DbService.models().User;
 
 
