@@ -1,15 +1,17 @@
 'use strict';
 
 const MainService = require('../main');
+const _           = require('lodash');
 
 module.exports = class UserService extends MainService {
   constructor(userData) {
     super('User Service');
-    const CryptoService   = require(`${basePath}/app/services`).CRYPTO;
-    this._userProvider    = require(`${basePath}/app/services`).DB_SERVICE.models()['User'];
-    this._userData        = userData;
+    
+    const { CryptoService, DbService } = require(`${basePath}/app/services`);
 
-    this._encodeService   = new CryptoService();
+    this._userProvider  = DbService.models()['User'];
+    this._userData      = userData;
+    this._encodeService = new CryptoService();
   }
 
   create() {
@@ -27,8 +29,8 @@ module.exports = class UserService extends MainService {
   }
 
   update(updateData) {
-    let self = this;
-    return self._userProvider.findOneAndUpdate(self._userData, updateData, { "new": true });
+    const updatedUser = _.mergeWith(this._userData, updateData);
+    return updatedUser.save();
   }
 
   updateActiveStatus(isActive) {
@@ -40,7 +42,7 @@ module.exports = class UserService extends MainService {
   }
 
   changePassword(newPassword) {
-    let self = this;
+    const self = this;
     return self._encodeService
       .encode(newPassword)
       .then((encryptedPassword) => {

@@ -12,7 +12,7 @@ module.exports = class EntityLoader extends MainService {
     super('Entity Loader');
   }
 
-  setEntity(req, entityObj) {
+  static setEntity(req, entityObj) {
     if(!req.entities) {
       req.entities = {};
     }
@@ -21,13 +21,13 @@ module.exports = class EntityLoader extends MainService {
       req.entities.loaded = {};
     }
 
-    return Object.assign(req.entities.loaded, obj);
+    return Object.assign(req.entities.loaded, entityObj);
   }
 
-  getEntity(req, key) {
-    if(!(req.entities && req.entities.loaded && req.entities.loaded.key)) {
+  static getEntity(req, key) {
+    if(!(req.entities && req.entities.loaded && req.entities.loaded[key])) {
       return null;
     }
-    return req.entities.loaded.key;
+    return req.entities.loaded[key];
   }
 };

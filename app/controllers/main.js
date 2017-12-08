@@ -1,14 +1,14 @@
 'use strict';
 
-const cool      = require('cool-ascii-faces');
-const services  = require(`${basePath}/app/services`);
+const cool                = require('cool-ascii-faces');
+const { ResponseService}  = require(`${basePath}/app/services`);
 
 module.exports = {
   main: (req, res, next) => {
-    services.RESPONSE.sendSuccessResponse(res, cool());
+    ResponseService.sendSuccessResponse(res, cool());
   },
 
   status: (req, res, next) => {
-    services.RESPONSE.sendSuccessResponse(res, { status: 'OK' });
+    ResponseService.sendSuccessResponse(res, { status: 'OK' });
   }
 };

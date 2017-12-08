@@ -1,7 +1,7 @@
 'use strict';
 
 const _                   = require('lodash');
-const DbService           = require(`${basePath}/app/services`).DB_SERVICE;
+const { DbService }       = require(`${basePath}/app/services`);
 const userEnums           = require(`${basePath}/app/enums`).USER;
 const userRolesEnums      = _.values(userEnums.ROLES);
 

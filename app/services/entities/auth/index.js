@@ -18,12 +18,12 @@ module.exports = class AuthService extends MainService {
   constructor(authProvider, inputConfig) {
     if(!instance){
       super('Auth Service');
-      const services = require(`${basePath}/app/services`);
+      const { DbService } = require(`${basePath}/app/services`);
       this.authProvider   = authProvider || passport;
       this.config         = inputConfig || config;
       this.tokenTypes     = tokenTypes;
       this.jwt            = jwt;
-      this.authEntities   = services.DB_SERVICE.models();
+      this.authEntities   = DbService.models();
       instance = this;
     }
     return instance;
@@ -74,10 +74,9 @@ module.exports = class AuthService extends MainService {
         } else {
           if (user) {
             const token = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
-            resolve({ token: token, user: user });
-          } else {
-            reject(new NotAuthorized('Login info incorrect'));
-          }
+            return resolve({ token: token, user: user });
+          } 
+          return reject(new NotAuthorized('Login info incorrect'));
         }
       })(req);
     })
@@ -116,9 +115,8 @@ module.exports = class AuthService extends MainService {
         if (user) {
           req.user = user;
           return user;
-        } else {
-          throw new NotAuthorized();
-        }
+        } 
+        throw new NotAuthorized();
       });
   }
 };

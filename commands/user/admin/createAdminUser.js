@@ -18,12 +18,10 @@ require(`${basePath}/app/models/entities/User`);
  * Include Services
  * @type {*}
  */
-const appConfig         = require(`${basePath}/config/app`);
-const services          = require(`${basePath}/app/services`);
+const { DbService, UserService } = require(`${basePath}/app/services`);
+const appConfig = require(`${basePath}/config/app`);
 
-const DbService     = services.DB_SERVICE;
 const dbService     = new DbService({ connectionString: appConfig.db.connectionString });
-const UserService   = services.USER;
 const UserModel     = DbService.models()['User'];
 
 const newAdminData  = require('./config').adminData;

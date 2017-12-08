@@ -5,11 +5,11 @@ const FacebookStrategy    = require('passport-facebook').Strategy;
 const GoogleStrategy      = require('passport-google').Strategy;
 const LocalStrategy       = require('passport-local').Strategy;
 
+const { CryptoService, DbService } = require(`${basePath}/app/services`);
+
 const { NotAuthorized }   = require(`${basePath}/app/utils/apiErrors`);
-const services            = require(`${basePath}/app/services`);
-const crypto              = new services.CRYPTO();
-const DbService           = services.DB_SERVICE;
-const UserModel           = DbService.models()['User'];
+const crypto              = new CryptoService();
+const UserModel           = DbService.models().User;
 
 const authStrategiesEnum  = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
 
