@@ -45,7 +45,15 @@ module.exports = {
   },
 
   deleteOne: (req, res, next) => {
-    next();
+
+    const userIdRequested   = req.params.userId;
+    const userIdCurrent     = req.user._id.toString();
+
+    if(!(userIdRequested === userIdCurrent)) {
+      return next();
+    }
+
+    next(new Forbidden('can\'t remove yourself'));
   },
 
   deleteMultiple: (req, res, next) => {
