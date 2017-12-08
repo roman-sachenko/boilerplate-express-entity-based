@@ -9,11 +9,6 @@ module.exports = {
     PORT: 3000
   },
 
-  redisStore: {
-    url       : 'redis://localhost:6379',
-    secret    : 'Take a look to the sky just before you die'
-  },
-
   social: {
     facebook: {
       appId           : '',
