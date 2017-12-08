@@ -2,11 +2,20 @@
 
 const SERVICES_FOLDER_NAME = 'entities';
 
+const AuthService = require(`./${SERVICES_FOLDER_NAME}/auth`);
+const UserService = require(`./${SERVICES_FOLDER_NAME}/user`);
+const DbService = require(`./${SERVICES_FOLDER_NAME}/db`);
+const EntityLoaderService = require(`./${SERVICES_FOLDER_NAME}/entityLoader`);
+const ResponseService = require(`./${SERVICES_FOLDER_NAME}/response`);
+const LoggerService = require(`./${SERVICES_FOLDER_NAME}/logger`);
+const CryptoService = require(`./${SERVICES_FOLDER_NAME}/crypto`);
+
 module.exports = {
-  AUTH            : require(`./${SERVICES_FOLDER_NAME}/auth`),
-  USER            : require(`./${SERVICES_FOLDER_NAME}/user`),
-  DB_SERVICE      : require(`./${SERVICES_FOLDER_NAME}/db`),
-  RESPONSE        : require(`./${SERVICES_FOLDER_NAME}/response`),
-  LOGGER          : require(`./${SERVICES_FOLDER_NAME}/logger`),
-  CRYPTO          : require(`./${SERVICES_FOLDER_NAME}/crypto`)
+  AuthService,
+  UserService,
+  DbService,
+  EntityLoaderService,
+  ResponseService,
+  LoggerService,
+  CryptoService
 };

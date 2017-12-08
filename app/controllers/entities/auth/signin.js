@@ -1,15 +1,15 @@
 'use strict';
 
-const services              = require(`${basePath}/app/services`);
-const authService           = new services.AUTH();
+const { AuthService, ResponseService } = require(`${basePath}/app/services`);
 const authStrategiesEnum    = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
+const authService           = new AuthService();
 
 module.exports = {
   signin: (req, res, next) => {
     
     authService.authenticate(req, authStrategiesEnum.USER_LOCAL)
       .then((result) => {
-        services.RESPONSE.sendSuccessResponse(res, result);
+        ResponseService.sendSuccessResponse(res, result);
       })
       .catch((err) => {
         next(err);

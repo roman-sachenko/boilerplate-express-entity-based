@@ -4,8 +4,8 @@ const path                = require('path');
 global.basePath           = path.normalize(`${__dirname}`);
 const cluster             = require('cluster');
 const numberOfInstances   = require('os').cpus().length;
-const services            = require(`${basePath}/app/services`);
-const httpLogger          = new services.LOGGER({ dirPathRelative: '/http-logs' });
+const { LoggerService }   = require(`${basePath}/app/services`);
+const httpLogger          = new LoggerService({ dirPathRelative: '/http-logs' });
 
 
 if (cluster.isMaster) {

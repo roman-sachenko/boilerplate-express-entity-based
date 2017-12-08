@@ -9,11 +9,6 @@ module.exports = {
     PORT: process.env.NODE_SERVER_PORT
   },
 
-  redisStore: {
-    url     : process.env.REDIS_STORE_URL,
-    secret  : process.env.REDIS_STORE_SECRET
-  },
-
   social: {
     facebook: {
       appId           : process.env.SOCIAL_FACEBOOK_APP_ID,

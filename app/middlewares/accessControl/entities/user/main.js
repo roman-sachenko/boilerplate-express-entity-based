@@ -1,5 +1,7 @@
 'use strict';
 
+const mainAcl         = require('../main');
+const { Forbidden }   = require(`${basePath}/app/utils/apiErrors`);
 
 module.exports = {
   createOne: (req, res, next) => {
@@ -7,11 +9,35 @@ module.exports = {
   },
 
   updateOne: (req, res, next) => {
+    
+    if(mainAcl.isAdmin(req.user)) {
 
+      return next();
+    }
+
+    const userIdRequested   = req.params.userId;
+    const userIdCurrent     = req.user._id.toString();
+
+    if(userIdRequested === userIdCurrent) {
+      return next();
+    }
+
+    next(new Forbidden());
   },
 
   getOne: (req, res, next) => {
-    next();
+    if(mainAcl.isAdmin(req.user)) {
+      return next();
+    }
+
+    const userIdRequested   = req.params.userId;
+    const userIdCurrent     = req.user._id.toString();
+
+    if(userIdRequested === userIdCurrent) {
+      return next();
+    }
+
+    next(new Forbidden());
   },
 
   getAll: (req, res, next) => {
@@ -19,7 +45,7 @@ module.exports = {
   },
 
   deleteOne: (req, res, next) => {
-
+    next();
   },
 
   deleteMultiple: (req, res, next) => {
