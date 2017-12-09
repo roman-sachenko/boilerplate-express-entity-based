@@ -28,8 +28,8 @@ Visit https://nodejs.org for installation details.
 
 Node Package Manager, should come bundled with node.
 
-
 ### pm2/nodemon process managers
+
 nodemon/pm2 will restart the server automatically on code change.
 
 `$ npm install -g nodemon`
@@ -53,9 +53,9 @@ Install MongoDB https://docs.mongodb.com/manual/installation/
 
 `./config` copy `local.example.js` file content to newly created `local.js` file and perofrm changes if it's needed 
 
-create `.emv` file and copy data from `./env_example` 
+create `.env` file and copy data from `./env_example` 
 
-## Runing the project
+## Running the project
 
 `$ npm start`
 
