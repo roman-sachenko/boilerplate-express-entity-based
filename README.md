@@ -51,8 +51,6 @@ Install MongoDB https://docs.mongodb.com/manual/installation/
 
 ### App Settings
 
-`./config` copy `local.example.js` file content to newly created `local.js` file and perofrm changes if it's needed 
-
 create `.env` file and copy data from `./env_example` 
 
 ## Running the project
