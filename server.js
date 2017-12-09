@@ -1,11 +1,18 @@
 'use strict';
 
+/**
+ * Allows the system to read .env file
+ */
+require('dotenv').config();
+
 const path                = require('path');
 global.basePath           = path.normalize(`${__dirname}`);
 const cluster             = require('cluster');
 const numberOfInstances   = require('os').cpus().length;
 const { LoggerService }   = require(`${basePath}/app/services`);
 const httpLogger          = new LoggerService({ dirPathRelative: '/http-logs' });
+
+console.log(process.env.NODE_ENV)
 
 
 if (cluster.isMaster) {
