@@ -13,13 +13,10 @@ const WorkEnvs          = require(`${basePath}/app/enums`).WORK_ENVS;
 const { NotFound }      = require(`${basePath}/app/utils/apiErrors`);
 const customValidators  = require(`${basePath}/app/validators/custom`);
 
-const dbService         = new DbService({ connectionString: appConfig.db.connectionString });
-const isLoggedEnabled   = parseInt(process.env.APP_LOGGER_ENABLED)
-const httpLogger        = isLoggedEnabled ? new LoggerService({ dirPathRelative: '/http-logs'}) : null;
+const dbService   = new DbService({ connectionString: appConfig.db.connectionString });
+const httpLogger  = appConfig.app.isLoggerEnabled ? new LoggerService({ dirPathRelative: '/http-logs'}) : null;
 
-
-const passport = require(`${basePath}/app/libs/passport`).init(appConfig);
-
+const passport    = require(`${basePath}/app/libs/passport`).init(appConfig);
 const http              = require('http');
 const app               = new require('express')();
 const helmet            = require('helmet');
