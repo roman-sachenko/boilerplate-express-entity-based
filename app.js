@@ -21,7 +21,6 @@ const passport = require(`${basePath}/app/libs/passport`).init(appConfig);
 
 const http              = require('http');
 const app               = new require('express')();
-const session           = require('express-session');
 const port              = process.env.ENV_PORT || appConfig.env.PORT;
 
 const helmet            = require('helmet');

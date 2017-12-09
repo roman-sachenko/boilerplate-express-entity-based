@@ -12,8 +12,6 @@ const numberOfInstances   = require('os').cpus().length;
 const { LoggerService }   = require(`${basePath}/app/services`);
 const httpLogger          = new LoggerService({ dirPathRelative: '/http-logs' });
 
-console.log(process.env.NODE_ENV)
-
 
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
