@@ -5,6 +5,11 @@
  * @type {string}
  */
 
+ /**
+ * Allows the system to read .env file
+ */
+require('dotenv').config();
+
 /**
  * Env configuration
  */
