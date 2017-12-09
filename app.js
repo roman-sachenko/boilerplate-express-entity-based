@@ -13,9 +13,10 @@ const WorkEnvs          = require(`${basePath}/app/enums`).WORK_ENVS;
 const { NotFound }      = require(`${basePath}/app/utils/apiErrors`);
 const customValidators  = require(`${basePath}/app/validators/custom`);
 
+const dbService         = new DbService({ connectionString: appConfig.db.connectionString });
+const isLoggedEnabled   = parseInt(process.env.APP_LOGGER_ENABLED)
+const httpLogger        = isLoggedEnabled ? new LoggerService({ dirPathRelative: '/http-logs'}) : null;
 
-const dbService     = new DbService({ connectionString: appConfig.db.connectionString });
-const httpLogger    = new LoggerService({ dirPathRelative: '/http-logs'});
 
 const passport = require(`${basePath}/app/libs/passport`).init(appConfig);
 
@@ -70,6 +71,10 @@ function mainErrorHandler(err, req, res, next) {
       error.message = err.stack || err;
     }
   }
-  httpLogger.log(Object.assign(req, error), 'error');
+
+  if(httpLogger) {
+    httpLogger.log(Object.assign(req, error), 'error');
+  }
+  
   ResponseService.sendErrorResponse(res, error);
 }
