@@ -70,7 +70,7 @@ module.exports = class AuthService extends MainService {
     return new Promise((resolve, reject) => {
       self.authProvider.authenticate(strategy, (err, user) => {
         if (err) {
-          reject(err);
+          reject(new NotAuthorized('Login info incorrect'));
         } else {
           if (user) {
             const token = self.jwt.sign({ id: user._id }, self.config.jwt.secret);

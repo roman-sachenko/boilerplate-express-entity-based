@@ -1,20 +1,34 @@
 'use strict';
 
-/**
- * Application config file
- * Takes default config and assign(merge) environment specifications
- */
+module.exports = {
+  db: {
+    connectionString: process.env.DB_CONNECTION_STRING,
+  },
 
-const _ = require('lodash');
+  env: {
+    PORT: process.env.NODE_SERVER_PORT || 3000,
+    instancesCount: parseInt(process.env.NODE_INSTANCES_COUNT) || 1,
+  },
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'local';
+  app: {
+    isLoggerEnabled: parseInt(process.env.APP_LOGGER_ENABLED) || 0,
+  },
 
-let initGlobalConfig = function () {
+  social: {
+    facebook: {
+      appId           : process.env.SOCIAL_FACEBOOK_APP_ID,
+      app_Secret      : process.env.SOCIAL_FACEBOOK_APP_SECRET,
+      appCallbackUrl  : process.env.SOCIAL_FACEBOOK_CALLBACK_URL,
+    },
 
-  let defaultConfig       = require('./env/default');
-  let environmentConfig   = require('./env/' + process.env.NODE_ENV);
+    google: {
+      appCallbackUrl: {
+        appCallbackUrl: process.env.SOCIAL_GOOGLE_CALLBACK_URL,
+      }
+    }
+  },
 
-  return _.merge(defaultConfig, environmentConfig);
+  jwt: {
+    secret: process.env.JWT_SECRET,
+  }
 };
-
-module.exports = initGlobalConfig();
