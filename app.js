@@ -21,12 +21,14 @@ const passport = require(`${basePath}/app/libs/passport`).init(appConfig);
 
 const http              = require('http');
 const app               = new require('express')();
-const port              = process.env.ENV_PORT || appConfig.env.PORT;
-
 const helmet            = require('helmet');
 const expressValidator  = require('express-validator');
 const bodyParser        = require('body-parser');
-const server            = http.Server(app).listen(port);
+
+const port    = process.env.ENV_PORT || appConfig.env.PORT;
+const server  = http.Server(app).listen(port, () => {
+  console.log(`Hell yeah on port  ${port}`);
+});
 
 
 //Establishing DB Connection
@@ -46,9 +48,6 @@ app
   .use('/api/v1', require('./routes/v1'))
   .use(routeNotFoundHandler)
   .use(mainErrorHandler);
-
-console.log('Hell yeah on port ' + port);
-
 
 
 
