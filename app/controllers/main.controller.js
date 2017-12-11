@@ -4,11 +4,11 @@ const cool                = require('cool-ascii-faces');
 const { ResponseService}  = require(`${basePath}/app/services`);
 
 module.exports = {
-  main: (req, res, next) => {
+  main: async (req, res, next) => {
     ResponseService.sendSuccessResponse(res, cool());
   },
 
-  status: (req, res, next) => {
+  status: async (req, res, next) => {
     ResponseService.sendSuccessResponse(res, { status: 'OK' });
   }
 };

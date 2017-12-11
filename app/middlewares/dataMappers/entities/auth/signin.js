@@ -3,9 +3,9 @@
 const mainMapper = require('../../main');
 
 module.exports = {
-  signin: (req, res, next) => {
+  signin: async (req, res, next) => {
     delete req.user.password;
     mainMapper.setEntities(req, { userData: req.user });
-    next();
+    return next();
   }
 };

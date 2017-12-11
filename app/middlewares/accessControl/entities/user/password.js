@@ -1,11 +1,11 @@
 'use strict';
 
 module.exports = {
-  sendForgotToken: (req, res, next) => {
-    next();
+  sendForgotToken: async (req, res, next) => {
+    return next();
   },
 
-  changePassword: (req, res, next) => {
-    next();
+  changePassword: async (req, res, next) => {
+    return next();
   }
 };
