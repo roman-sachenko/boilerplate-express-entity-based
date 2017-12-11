@@ -4,7 +4,7 @@ process.env.NODE_ENV = process.env.NODE_ENV || 'local';
 
 require(`${basePath}/app/services`);
 
-require(`${basePath}/app/models/entities/User`);
+require(`${basePath}/app/models/User.model`);
 
 const { DbService, ResponseService, LoggerService } = require(`${basePath}/app/services`);
 

@@ -12,15 +12,15 @@ module.exports = {
       delete req.body.password;
       delete req.body.confirm_password;
     }
-    next();
+    return next();
   },
 
   getOne: (req, res, next) => {
-    next();
+    return next();
   },
 
   getAll: (req, res, next) => {
-    next();
+    return next();
   },
 
   deleteOne: (req, res, next) => {

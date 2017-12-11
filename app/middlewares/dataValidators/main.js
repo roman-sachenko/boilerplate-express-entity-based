@@ -20,14 +20,13 @@ const mainDataValidator = {
     return req.getValidationResult();
   },
 
-  handleValidationResult: (dataValidationResultPromise, res, next) => {
-    dataValidationResultPromise
-      .then((validationResult) => {
-        if(!validationResult.isEmpty()){
-          return next(new BadRequest(JSON.stringify(validationResult.mapped())));
-        } 
-        return next();
-      });
+  handleValidationResult: async (dataValidationResultPromise, res, next) => {
+
+    let validationResult = await dataValidationResultPromise;
+    if(!validationResult.isEmpty()){
+      return next(new BadRequest(JSON.stringify(validationResult.mapped())));
+    } 
+    return next();
   },
 
 };

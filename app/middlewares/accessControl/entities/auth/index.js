@@ -13,21 +13,20 @@ module.exports = {
    * auth middleware method to authenticate via token
    */
 
-  isAuthenticated: (req, res, next) => {
-    
-    authService.verifyToken(req, AuthService.getStrategies().USER_LOCAL)
-      .then((authResult) => {
-        next();
-      })
-      .catch((err) => {
-        next(err);
-      })
+  isAuthenticated: async (req, res, next) => {
+
+    try {
+      const authResult = await authService.verifyToken(req, AuthService.getStrategies().USER_LOCAL);
+      return next();
+    } catch(err) {
+      return next(err);
+    }
   },
 
-  isAdmin: (req, res, next) => {
+  isAdmin: async (req, res, next) => {
     if(req.user && req.user.role === UserModel.ROLES.ADMIN) {
       return next();
     }
-    next(new Forbidden());
+    return next(new Forbidden());
   }
 };

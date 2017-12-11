@@ -4,56 +4,55 @@ const { EntityLoaderService, ResponseService, UserService } = require(`${basePat
 
 
 module.exports = {
-  createOne: (req, res, next) => {
+  createOne: async (req, res, next) => {
 
   },
 
-  updateOne: (req, res, next) => {
+  updateOne: async (req, res, next) => {
     const user        = EntityLoaderService.getEntity(req, 'user');
     const userService = new UserService(user);
 
-    return userService.update(req.body)
-      .then((deletedUser) => {
-        ResponseService.sendSuccessResponse(res, deletedUser);
-      })
-      .catch((err) => {
-        next(err);
-      });
+    try {
+      const updatedUser =  await userService.update(req.body)
+      ResponseService.sendSuccessResponse(res, updatedUser);
+    } catch(err) {      
+      return next(err);  
+    }
   },
 
-  getOne: (req, res, next) => {
+  getOne: async (req, res, next) => {
 
     try {
       const user = EntityLoaderService.getEntity(req, 'user');
       ResponseService.sendSuccessResponse(res, user);
     } catch(err) {
-      next(err);
+      return next(err);
     }
   },
 
-  getAll: (req, res, next) => {
+  getAll: async (req, res, next) => {
     try {
       const users = EntityLoaderService.getEntity(req, 'users');
       ResponseService.sendSuccessResponse(res, users);
     } catch(err) {
-      next(err);
+      return next(err);
     }
   },
 
-  deleteOne: (req, res, next) => {
+  deleteOne: async (req, res, next) => {
     const user        = EntityLoaderService.getEntity(req, 'user');
     const userService = new UserService(user);
 
-    return userService.remove()
-      .then((deletedUser) => {
-        ResponseService.sendSuccessResponse(res, deletedUser);
-      })
-      .catch((err) => {
-        next(err);
-      });
+    try {
+      const deletedUser = await userService.remove();
+      ResponseService.sendSuccessResponse(res, deletedUser);
+    } catch(err) {
+      return next(err);
+    }
+
   },
 
-  deleteMultiple: (req, res, next) => {
+  deleteMultiple: async (req, res, next) => {
 
   }
 };

@@ -14,34 +14,37 @@ module.exports = {
    * @param res
    * @param next
    */
-  regular: (req, res, next) => {
-    let signUpData = req.entities.mapped.signUpData;
+  regular: async (req, res, next) => {
+
+    try {
+      const signUpData = req.entities.mapped.signUpData;
+      const useSearchResult = await UserModel.findOne({ email: signUpData.email }).select('_id');
     
-    UserModel
-      .findOne({ email: signUpData.email })
-      .select('_id')
-      .then((searchResult) => {
-        if(!helpers.isObjectValid(searchResult)) {
-          let userService = new UserService(signUpData);
-          return userService.create(signUpData);
-        }
-        throw new AlreadyExist('sign up: email already exists');
-      })
-      .then((userCreated) => {
+  
+      if(!helpers.isObjectValid(useSearchResult)) {
+
+        const userService = new UserService(signUpData);
+        let userCreated = await userService.create(signUpData);
+
         userCreated = userCreated.toJSON();
         delete userCreated.password;
+
         ResponseService.sendSuccessResponse(res, userCreated);
-      })
-      .catch((err) => {
-        next(err);
-      });
+      }
+
+      throw new AlreadyExist('sign up: email already exists');
+
+    } catch(err) {
+      next(err);
+    }
+
   },
 
-  facebook: (req, res, next) => {
+  facebook: async (req, res, next) => {
     
   },
 
-  google: (req, res, next) => {
+  google: async (req, res, next) => {
 
   }
 };

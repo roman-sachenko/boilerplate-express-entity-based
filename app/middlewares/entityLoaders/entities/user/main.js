@@ -9,79 +9,81 @@ const UserModel     = DbService.models().User;
 
 
 module.exports = {
-  createOne: (req, res, next) => {
+  createOne: async (req, res, next) => {
     next();
   },
 
-  updateOne: (req, res, next) => {
+  updateOne: async (req, res, next) => {
 
-    UserModel
-    .findOne({ _id: req.params.userId })
-    .then(isUserObjectValid)
-    .then((userFound => {
+    try {
+      const userFound = await UserModel.findOne({ _id: req.params.userId });
+
+      if(!mainHelper.isObjectValid(userFound)) {
+        throw new NotFound('user not found');
+      }
+
       MainLoader.setEntities(req, { user: userFound });
       return next();
-    }))
-    .catch((err) => {
-      next(err);
-    });
+
+    } catch(err) {
+      return next(err);
+    }
 
   },
 
-  getOne: (req, res, next) => {
+  getOne: async (req, res, next) => {
 
-    UserModel
-    .findOne({ _id: req.params.userId })
-    .lean()
-    .then(isUserObjectValid)
-    .then((userFound => {
+    try {
+      const userFound = await UserModel.findOne({ _id: req.params.userId }).lean();
+
+      if(!mainHelper.isObjectValid(userFound)) {
+        throw new NotFound('user not found');
+      }
+
       MainLoader.setEntities(req, { user: userFound });
       return next();
-    }))
-    .catch((err) => {
-      next(err);
-    });
 
+    } catch(err) {
+      return next(err);
+    }
   },
 
-  getAll: (req, res, next) => {
+  getAll: async (req, res, next) => {
 
-    UserModel
-    .find({})
-    .lean()
-    .then((usersFound => {
+    try {
+      const usersFound = await UserModel.find({}).lean();
+
+      if(!mainHelper.isObjectValid(usersFound)) {
+        throw new NotFound('user not found');
+      }
+
       MainLoader.setEntities(req, { users: usersFound });
-      next();
-    }))
-    .catch((err) => {
-      next(err);
-    });
+      return next();
 
+    } catch(err) {
+      return next(err);
+    }
   },
 
-  deleteOne: (req, res, next) => {
+  deleteOne: async (req, res, next) => {
 
-    UserModel
-    .findOne({ _id: req.params.userId })
-    .select('_id')
-    .then(isUserObjectValid)
-    .then((userFound => {
+    try {
+      const userFound = await UserModel.findOne({ _id: req.params.userId }).select('_id');
+
+      if(!mainHelper.isObjectValid(userFound)) {
+        throw new NotFound('user not found');
+      }
+
       MainLoader.setEntities(req, { user: userFound });
       return next();
-    }))
-    .catch((err) => {
-      next(err);
-    });
+
+    } catch(err) {
+      return next(err);
+    }
+
   },
 
-  deleteMultiple: (req, res, next) => {
+  deleteMultiple: async (req, res, next) => {
     next();
   }
 };
-
-function isUserObjectValid(user) {
-  if(mainHelper.isObjectValid(user)) {
-    return user
-  }
-  throw new NotFound('user not found');
-}
