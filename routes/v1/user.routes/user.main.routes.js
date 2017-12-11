@@ -3,7 +3,7 @@
 const express = require('express');
 const appRoute = express.Router({ strict: true });
 
-const controller      = require(`${basePath}/app/controllers/entities/user/main`);
+const controller      = require(`${basePath}/app/controllers/user.controllers/user.main.controller`);
 const acl             = require(`${basePath}/app/middlewares/accessControl/entities/user/main`);
 const authMiddleware  = require(`${basePath}/app/middlewares/accessControl/entities/auth`);
 const validator       = require(`${basePath}/app/middlewares/dataValidators/entities/user/main`);
