@@ -29,7 +29,7 @@ module.exports = {
         userCreated = userCreated.toJSON();
         delete userCreated.password;
 
-        ResponseService.sendSuccessResponse(res, userCreated);
+        return ResponseService.sendSuccessResponse(res, userCreated);
       }
 
       throw new AlreadyExist('sign up: email already exists');
