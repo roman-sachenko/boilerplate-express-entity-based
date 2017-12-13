@@ -52,11 +52,6 @@ module.exports = {
 
     try {
       const usersFound = await UserModel.find({}).lean();
-
-      if(!mainHelper.isObjectValid(usersFound)) {
-        throw new NotFound('user not found');
-      }
-
       MainLoader.setEntities(req, { users: usersFound });
       return next();
 
