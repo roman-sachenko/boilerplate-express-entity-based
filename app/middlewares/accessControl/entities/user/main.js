@@ -4,11 +4,11 @@ const mainAcl         = require('../main');
 const { Forbidden }   = require(`${basePath}/app/utils/apiErrors`);
 
 module.exports = {
-  createOne: async (req, res, next) => {
+  async createOne(req, res, next) {
 
   },
 
-  updateOne: async (req, res, next) => {
+  async updateOne(req, res, next) {
     
     if(mainAcl.isAdmin(req.user)) {
 
@@ -25,7 +25,7 @@ module.exports = {
     next(new Forbidden());
   },
 
-  getOne: async (req, res, next) => {
+  async getOne(req, res, next) {
     if(mainAcl.isAdmin(req.user)) {
       return next();
     }
@@ -40,11 +40,11 @@ module.exports = {
     next(new Forbidden());
   },
 
-  getAll: async (req, res, next) => {
+  async getAll(req, res, next) {
     next();
   },
 
-  deleteOne: async (req, res, next) => {
+  async deleteOne(req, res, next) {
 
     const userIdRequested   = req.params.userId;
     const userIdCurrent     = req.user._id.toString();
@@ -56,7 +56,7 @@ module.exports = {
     next(new Forbidden('can\'t remove yourself'));
   },
 
-  deleteMultiple: async (req, res, next) => {
+  async deleteMultiple(req, res, next) {
 
   }
 };

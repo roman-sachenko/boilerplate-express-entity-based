@@ -3,7 +3,7 @@
 const { EntityLoaderService } = require(`${basePath}/app/services`);
 
 module.exports = {
-  setEntities: (req, entities) => {
+  setEntities(req, entities) {
     if(!req.entities) {
       req.entities = {};
     }

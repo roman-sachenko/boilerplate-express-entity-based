@@ -14,7 +14,7 @@ module.exports = {
    * @param res
    * @param next
    */
-  regular: async (req, res, next) => {
+  async regular(req, res, next) {
 
     try {
       const signUpData = req.entities.mapped.signUpData;
@@ -24,12 +24,12 @@ module.exports = {
       if(!helpers.isObjectValid(useSearchResult)) {
 
         const userService = new UserService(signUpData);
-        let userCreated = await userService.create(signUpData);
+        let userCreated = await userService.create();
 
         userCreated = userCreated.toJSON();
         delete userCreated.password;
 
-        ResponseService.sendSuccessResponse(res, userCreated);
+        return ResponseService.sendSuccessResponse(res, userCreated);
       }
 
       throw new AlreadyExist('sign up: email already exists');
@@ -40,11 +40,11 @@ module.exports = {
 
   },
 
-  facebook: async (req, res, next) => {
+  async facebook(req, res, next) {
     
   },
 
-  google: async (req, res, next) => {
+  async google(req, res, next) {
 
   }
 };

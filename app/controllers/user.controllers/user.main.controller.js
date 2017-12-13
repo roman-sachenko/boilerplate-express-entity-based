@@ -4,11 +4,11 @@ const { EntityLoaderService, ResponseService, UserService } = require(`${basePat
 
 
 module.exports = {
-  createOne: async (req, res, next) => {
+  async createOne(req, res, next) {
 
   },
 
-  updateOne: async (req, res, next) => {
+  async updateOne(req, res, next) {
     const user        = EntityLoaderService.getEntity(req, 'user');
     const userService = new UserService(user);
 
@@ -20,7 +20,7 @@ module.exports = {
     }
   },
 
-  getOne: async (req, res, next) => {
+  async getOne(req, res, next) {
 
     try {
       const user = EntityLoaderService.getEntity(req, 'user');
@@ -30,7 +30,7 @@ module.exports = {
     }
   },
 
-  getAll: async (req, res, next) => {
+  async getAll(req, res, next) {
     try {
       const users = EntityLoaderService.getEntity(req, 'users');
       ResponseService.sendSuccessResponse(res, users);
@@ -39,7 +39,7 @@ module.exports = {
     }
   },
 
-  deleteOne: async (req, res, next) => {
+  async deleteOne(req, res, next) {
     const user        = EntityLoaderService.getEntity(req, 'user');
     const userService = new UserService(user);
 
@@ -52,7 +52,7 @@ module.exports = {
 
   },
 
-  deleteMultiple: async (req, res, next) => {
+  async deleteMultiple(req, res, next) {
 
   }
 };
