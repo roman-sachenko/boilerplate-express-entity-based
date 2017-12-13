@@ -24,7 +24,7 @@ module.exports = {
       if(!helpers.isObjectValid(useSearchResult)) {
 
         const userService = new UserService(signUpData);
-        let userCreated = await userService.create(signUpData);
+        let userCreated = await userService.create();
 
         userCreated = userCreated.toJSON();
         delete userCreated.password;
