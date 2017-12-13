@@ -1,11 +1,11 @@
 'use strict';
 
 module.exports = {
-  sendForgotToken: (req, res, next) => {
+  sendForgotToken(req, res, next) {
     next();
   },
 
-  changePassword: (req, res, next) => {
+  changePassword(req, res, next) {
     next();
   }
 };

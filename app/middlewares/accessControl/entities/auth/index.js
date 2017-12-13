@@ -13,7 +13,7 @@ module.exports = {
    * auth middleware method to authenticate via token
    */
 
-  isAuthenticated: async (req, res, next) => {
+  async isAuthenticated(req, res, next) {
 
     try {
       const authResult = await authService.verifyToken(req, AuthService.getStrategies().USER_LOCAL);
@@ -23,7 +23,7 @@ module.exports = {
     }
   },
 
-  isAdmin: async (req, res, next) => {
+  async isAdmin(req, res, next) {
     if(req.user && req.user.role === UserModel.ROLES.ADMIN) {
       return next();
     }

@@ -14,7 +14,7 @@ module.exports = {
    * @param res
    * @param next
    */
-  regular: async (req, res, next) => {
+  async regular(req, res, next) {
 
     try {
       const signUpData = req.entities.mapped.signUpData;
@@ -40,11 +40,11 @@ module.exports = {
 
   },
 
-  facebook: async (req, res, next) => {
+  async facebook(req, res, next) {
     
   },
 
-  google: async (req, res, next) => {
+  async google(req, res, next) {
 
   }
 };

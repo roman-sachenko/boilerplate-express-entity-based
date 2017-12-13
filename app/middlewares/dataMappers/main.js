@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = {
-  setEntities: (req, entities) => {
+  setEntities(req, entities) {
     if (!req.entities) {
       req.entities = {};
     }

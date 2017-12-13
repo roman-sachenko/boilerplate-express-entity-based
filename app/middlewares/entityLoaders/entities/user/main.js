@@ -9,11 +9,11 @@ const UserModel     = DbService.models().User;
 
 
 module.exports = {
-  createOne: async (req, res, next) => {
+  async createOne(req, res, next) {
     next();
   },
 
-  updateOne: async (req, res, next) => {
+  async updateOne(req, res, next) {
 
     try {
       const userFound = await UserModel.findOne({ _id: req.params.userId });
@@ -31,7 +31,7 @@ module.exports = {
 
   },
 
-  getOne: async (req, res, next) => {
+  async getOne(req, res, next) {
 
     try {
       const userFound = await UserModel.findOne({ _id: req.params.userId }).lean();
@@ -48,7 +48,7 @@ module.exports = {
     }
   },
 
-  getAll: async (req, res, next) => {
+  async getAll(req, res, next) {
 
     try {
       const usersFound = await UserModel.find({}).lean();
@@ -60,7 +60,7 @@ module.exports = {
     }
   },
 
-  deleteOne: async (req, res, next) => {
+  async deleteOne(req, res, next) {
 
     try {
       const userFound = await UserModel.findOne({ _id: req.params.userId }).select('_id');
@@ -78,7 +78,7 @@ module.exports = {
 
   },
 
-  deleteMultiple: async (req, res, next) => {
+  async deleteMultiple(req, res, next) {
     next();
   }
 };

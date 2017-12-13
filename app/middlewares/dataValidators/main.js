@@ -6,7 +6,7 @@ const { BadRequest }        = require(`${basePath}/app/utils/apiErrors/index`);
 
 const mainDataValidator = {
 
-  validateErrorsAsync: (req) => {
+  validateErrorsAsync(req) {
 
     return req
       .asyncValidationErrors()
@@ -16,11 +16,11 @@ const mainDataValidator = {
       });
   },
 
-  validateErrorsSync: (req) => {
+  validateErrorsSync(req) {
     return req.getValidationResult();
   },
 
-  handleValidationResult: async (dataValidationResultPromise, res, next) => {
+  async handleValidationResult(dataValidationResultPromise, res, next) {
 
     let validationResult = await dataValidationResultPromise;
     if(!validationResult.isEmpty()){

@@ -7,7 +7,7 @@ const { check }               = require('express-validator/check');
 
 
 module.exports = {
-  createOne: (req, res, next) => {
+  createOne(req, res, next) {
 
   },
 
@@ -28,21 +28,21 @@ module.exports = {
     ],
 
 
-  getOne: (req, res, next) => {
+  getOne(req, res, next) {
     req.assert('userId', 'Valid user id should be provided').notEmpty().isMongoId();
     mainValidator.handleValidationResult(mainValidator.validateErrorsSync(req), res, next);
   },
 
-  getAll: (req, res, next) => {
+  getAll(req, res, next) {
     next();
   },
 
-  deleteOne: (req, res, next) => {
+  deleteOne(req, res, next) {
     req.assert('userId', 'Valid user id should be provided').notEmpty().isMongoId();
     mainValidator.handleValidationResult(mainValidator.validateErrorsSync(req), res, next);
   },
 
-  deleteMultiple: (req, res, next) => {
+  deleteMultiple(req, res, next) {
 
   }
 };
