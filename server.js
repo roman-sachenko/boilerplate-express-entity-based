@@ -1,18 +1,17 @@
-'use strict';
-
+const cpusLength  = require('os').cpus().length;
+const path        = require('path');
+global.basePath   = path.normalize(`${__dirname}`);
 /**
- * Allows the system to read .env file
+ * Parses .env files to retrieve config variables
  */
-require('dotenv').config();
+require('dotenv-safe').load({ path: `${basePath}/.env`, sample: `${basePath}/.env_example` });
 
-const path                = require('path');
-global.basePath           = path.normalize(`${__dirname}`);
-const cluster             = require('cluster');
-const { LoggerService }   = require(`${basePath}/app/services`);
-const appConfig           = require(`${basePath}/config/app`);
+const cluster         = require('cluster');
+const { LogService }  = require('./app/services');
+const appConfig       = require('./config/app');
 
-const httpLogger          = appConfig.app.isLoggerEnabled ? new LoggerService({ dirPathRelative: '/http-logs'}) : null;
-const numberOfInstances   = appConfig.env.instancesCount || require('os').cpus().length;
+const httpLogger          = appConfig.app.isLoggerEnabled ? new LogService({ dirPathRelative: '/http-logs' }) : null;
+const numberOfInstances   = appConfig.env.instancesCount || cpusLength;
 
 if (cluster.isMaster) {
   console.log(`Master ${process.pid} is running`);
@@ -27,18 +26,18 @@ if (cluster.isMaster) {
   require('./app');
 }
 
-function startInstances(cluster, instanceLim) {
+function startInstances(inputCluster, instanceLim) {
   for (let i = 0; i < instanceLim; i++) {
-    cluster.fork();
+    inputCluster.fork();
   }
 }
 
-function onExit(worker, code, signal) {
+function onExit(worker) {
   console.log(`worker ${worker.process.pid} died`);
 }
 
 function onUncaughtException(err) {
-  if(httpLogger) {
+  if (httpLogger) {
     httpLogger.log(err, 'error');
   }
   console.log(err);

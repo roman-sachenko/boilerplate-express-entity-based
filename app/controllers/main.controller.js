@@ -1,7 +1,5 @@
-'use strict';
-
 const cool                = require('cool-ascii-faces');
-const { ResponseService}  = require(`${basePath}/app/services`);
+const { ResponseService }  = require(`${basePath}/app/services`);
 
 module.exports = {
   async main(req, res, next) {
@@ -10,5 +8,5 @@ module.exports = {
 
   async status(req, res, next) {
     ResponseService.sendSuccessResponse(res, { status: 'OK' });
-  }
+  },
 };

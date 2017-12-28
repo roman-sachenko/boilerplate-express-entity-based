@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Customer validators for express-validator module
  */
@@ -12,10 +10,10 @@ module.exports = {
   },
 
   isDateFromValid: (value) => {
-    if(!value) {
+    if (!value) {
       return true;
     }
 
     return (moment().diff(value, 'seconds') > 0);
-  }
+  },
 };

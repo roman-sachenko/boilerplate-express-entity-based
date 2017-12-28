@@ -1,5 +1,3 @@
-'use strict';
-
 const mainMapper = require('../../main');
 
 module.exports = {
@@ -7,5 +5,5 @@ module.exports = {
     delete req.user.password;
     mainMapper.setEntities(req, { userData: req.user });
     return next();
-  }
+  },
 };

@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   sendForgotToken(req, res, next) {
     next();
@@ -7,5 +5,5 @@ module.exports = {
 
   changePassword(req, res, next) {
     next();
-  }
+  },
 };

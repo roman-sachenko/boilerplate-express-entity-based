@@ -1,5 +1,3 @@
-'use strict';
-
 const express = require('express');
 const appRoute = express.Router({ strict: true });
 const controller = require(`${basePath}/app/controllers/main.controller`);

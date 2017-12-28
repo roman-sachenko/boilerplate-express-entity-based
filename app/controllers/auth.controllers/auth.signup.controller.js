@@ -1,5 +1,3 @@
-'use strict';
-
 const { UserService, DbService, ResponseService } = require(`${basePath}/app/services`);
 
 const helpers           = require(`${basePath}/app/helpers`);
@@ -17,11 +15,11 @@ module.exports = {
   async regular(req, res, next) {
 
     try {
-      const signUpData = req.entities.mapped.signUpData;
+      const { signUpData } = req.entities.mapped;
       const useSearchResult = await UserModel.findOne({ email: signUpData.email }).select('_id');
     
   
-      if(!helpers.isObjectValid(useSearchResult)) {
+      if (!helpers.isObjectValid(useSearchResult)) {
 
         const userService = new UserService(signUpData);
         let userCreated = await userService.create();
@@ -34,17 +32,9 @@ module.exports = {
 
       throw new AlreadyExist('sign up: email already exists');
 
-    } catch(err) {
+    } catch (err) {
       next(err);
     }
 
   },
-
-  async facebook(req, res, next) {
-    
-  },
-
-  async google(req, res, next) {
-
-  }
 };
