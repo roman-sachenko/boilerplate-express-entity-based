@@ -1,9 +1,9 @@
 module.exports = {
   adminData: {
-    mail: process.env.ADMIN_EMAIL || 'admin@domain.com',
-    password: process.env.ADMIN_PASSWORD || 'test123',
-    first_name: process.env.ADMIN_FIRST_NAME || 'Admin',
-    last_name: process.env.ADMIN_LAST_NAME || 'Admin',
+    mail: process.env.ADMIN_EMAIL,
+    password: process.env.ADMIN_PASSWORD,
+    first_name: process.env.ADMIN_FIRST_NAME,
+    last_name: process.env.ADMIN_LAST_NAME,
     role: 'admin',
   },
 };
