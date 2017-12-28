@@ -4,7 +4,7 @@
   "description": "Express based structure and entity generator",
   "main": "server",
   "scripts": {
-    "test": "npm test",
+    "test": "./node_modules/mocha/bin/mocha ./test/integration --exit",
     "lint": "./node_modules/.bin/eslint  . *.js",
     "start": "node server.js",
     "start:staging": "node NODE_ENV=staging server.js",
@@ -13,7 +13,7 @@
   },
   "config": {
     "ghooks": {
-      "pre-push": "",
+      "pre-push": "npm test",
       "pre-commit": "npm run lint"
     }
   },
@@ -46,12 +46,15 @@
     "winston-daily-rotate-file": "^1.4.6"
   },
   "devDependencies": {
+    "chai": "^4.1.2",
     "cool-ascii-faces": "^1.3.4",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "ghooks": "^2.0.2",
+    "mocha": "^4.0.1",
     "pm2": "^2.4.6",
-    "snyk": "^1.54.1"
+    "snyk": "^1.54.1",
+    "supertest": "^3.0.0"
   }
 }
