@@ -24,6 +24,7 @@
     "body-parser": "^1.17.2",
     "connect-redis": "^3.3.0",
     "dotenv": "^4.0.0",
+    "dotenv-safe": "^4.0.4",
     "express": "^4.15.3",
     "express-session": "^1.15.3",
     "express-validator": "^4.3.0",

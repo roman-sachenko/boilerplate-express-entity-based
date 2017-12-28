@@ -1,21 +1,16 @@
-'use strict';
-
 const { EntityLoaderService, ResponseService, UserService } = require(`${basePath}/app/services`);
 
 
 module.exports = {
-  async createOne(req, res, next) {
-
-  },
 
   async updateOne(req, res, next) {
     const user        = EntityLoaderService.getEntity(req, 'user');
     const userService = new UserService(user);
 
     try {
-      const updatedUser =  await userService.update(req.body)
+      const updatedUser =  await userService.update(req.body);
       ResponseService.sendSuccessResponse(res, updatedUser);
-    } catch(err) {      
+    } catch (err) {      
       return next(err);  
     }
   },
@@ -25,7 +20,7 @@ module.exports = {
     try {
       const user = EntityLoaderService.getEntity(req, 'user');
       ResponseService.sendSuccessResponse(res, user);
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
   },
@@ -34,7 +29,7 @@ module.exports = {
     try {
       const users = EntityLoaderService.getEntity(req, 'users');
       ResponseService.sendSuccessResponse(res, users);
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
   },
@@ -46,13 +41,9 @@ module.exports = {
     try {
       const deletedUser = await userService.remove();
       ResponseService.sendSuccessResponse(res, deletedUser);
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
 
   },
-
-  async deleteMultiple(req, res, next) {
-
-  }
 };

@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   setEntities(req, entities) {
     if (!req.entities) {
@@ -11,5 +9,5 @@ module.exports = {
     }
 
     req.entities.mapped = entities;
-  }
+  },
 };

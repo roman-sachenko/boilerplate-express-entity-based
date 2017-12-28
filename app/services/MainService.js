@@ -1,13 +1,11 @@
-'use strict';
-
-const EventEmitter  = require('events');
-const config        = require(`${basePath}/config/app`);
+const config = require(`${basePath}/config/app`);
+const EventEmitter = require('events');
 
 module.exports = class MainService extends EventEmitter {
   constructor(name) {
-    super().setMaxListeners(0);
+    super();
     this._serviceName = name || '';
-    this._config      = config;
+    this._config = config;
   }
 
   _getConfig() {
@@ -15,8 +13,8 @@ module.exports = class MainService extends EventEmitter {
   }
 
   throwError(err) {
-    let self = this;
-    let errorMessage = err.stack || err;
+    const self = this;
+    const errorMessage = err.stack || err;
     throw new Error(`${self._serviceName}: ${errorMessage}`);
   }
 };

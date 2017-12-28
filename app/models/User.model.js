@@ -1,5 +1,3 @@
-'use strict';
-
 const userEnums     = require(`${basePath}/app/enums`).USER;
 const { DbService } = require(`${basePath}/app/services`);
 const schema        = require('./schemas/user.schema');
