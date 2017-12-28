@@ -1,23 +1,21 @@
-'use strict';
-
 /**
  * Script to create admin user
  * @type {string}
  */
-
- /**
- * Allows the system to read .env file
- */
+/**
+* Allows the system to read .env file
+*/
 require('dotenv').config();
 
 /**
  * Env configuration
  */
-const path              = require('path');
-global.basePath         = path.normalize(`${__dirname}/../../..`);
-process.env.NODE_ENV    = process.env.NODE_ENV || 'local';
+const path = require('path');
 
-require(`${basePath}/app/models/entities/User`);
+global.basePath = path.normalize(`${__dirname}/../../..`);
+process.env.NODE_ENV = process.env.NODE_ENV || 'local';
+
+require(`${basePath}/app/models/User.model`);
 
 /**
  * Include Services
@@ -26,11 +24,10 @@ require(`${basePath}/app/models/entities/User`);
 const { DbService, UserService } = require(`${basePath}/app/services`);
 const appConfig = require(`${basePath}/config/app`);
 
-const dbService     = new DbService({ connectionString: appConfig.db.connectionString });
-const UserModel     = DbService.models()['User'];
+const dbService = new DbService({ connectionString: appConfig.db.connectionString });
+const UserModel = DbService.models().User;
 
-const newAdminData  = require('./config').adminData;
-
+const newAdminData = require('./config').adminData;
 
 /**
  * Open Database Connection
@@ -41,27 +38,25 @@ dbService.connect();
 /**
  * Main function to perform admin creation process
  */
-function createAdmin() {
-  UserModel.findOne({ email: newAdminData.email })
-    .then((searchResult) => {
-      if(!isObjectValid(searchResult)) {
-        const userService = new UserService(newAdminData);
-        return userService.create();
-      }
+const createAdmin = async () => {
+  try {
+    const searchResult = await UserModel.findOne({ email: newAdminData.email });
+
+    if (isObjectValid(searchResult)) {
       throw new Error('Already Exists');
-    })
-    .then((createdUser) => {
-      return createdUser.save();
-    })
-    .then((savedUser) => {
-      log(`SUCCESS: Admin has been created with email: ${savedUser.email}`);
-      exitScript();
-    })
-    .catch((err) => {
-      log(`ERROR: ${err}`);
-      exitScript();
-    });
-}
+    }
+
+    const userService = new UserService(newAdminData);
+    await userService.create();
+
+    log('SUCCESS: Admin user has been created');
+    process.exit();
+
+  } catch (err) {
+    log(`ERROR: ${err}`);
+    exitScript();
+  }
+};
 
 function log(message) {
   console.log(message);

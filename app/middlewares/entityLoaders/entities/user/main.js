@@ -1,31 +1,24 @@
-'use strict';
-
 const MainLoader    = require('../../main');
 const { DbService } = require(`${basePath}/app/services/`);
 const { NotFound }  = require(`${basePath}/app/utils/apiErrors`);
 const mainHelper    = require(`${basePath}/app/helpers`);
 const UserModel     = DbService.models().User;
 
-
-
 module.exports = {
-  async createOne(req, res, next) {
-    next();
-  },
-
+  
   async updateOne(req, res, next) {
 
     try {
       const userFound = await UserModel.findOne({ _id: req.params.userId });
 
-      if(!mainHelper.isObjectValid(userFound)) {
+      if (!mainHelper.isObjectValid(userFound)) {
         throw new NotFound('user not found');
       }
 
       MainLoader.setEntities(req, { user: userFound });
       return next();
 
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
 
@@ -36,14 +29,14 @@ module.exports = {
     try {
       const userFound = await UserModel.findOne({ _id: req.params.userId }).lean();
 
-      if(!mainHelper.isObjectValid(userFound)) {
+      if (!mainHelper.isObjectValid(userFound)) {
         throw new NotFound('user not found');
       }
 
       MainLoader.setEntities(req, { user: userFound });
       return next();
 
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
   },
@@ -55,7 +48,7 @@ module.exports = {
       MainLoader.setEntities(req, { users: usersFound });
       return next();
 
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
   },
@@ -65,20 +58,16 @@ module.exports = {
     try {
       const userFound = await UserModel.findOne({ _id: req.params.userId }).select('_id');
 
-      if(!mainHelper.isObjectValid(userFound)) {
+      if (!mainHelper.isObjectValid(userFound)) {
         throw new NotFound('user not found');
       }
 
       MainLoader.setEntities(req, { user: userFound });
       return next();
 
-    } catch(err) {
+    } catch (err) {
       return next(err);
     }
 
   },
-
-  async deleteMultiple(req, res, next) {
-    next();
-  }
 };

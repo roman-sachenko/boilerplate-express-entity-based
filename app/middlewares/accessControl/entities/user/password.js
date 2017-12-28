@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
   async sendForgotToken(req, res, next) {
     return next();
@@ -7,5 +5,5 @@ module.exports = {
 
   async changePassword(req, res, next) {
     return next();
-  }
+  },
 };

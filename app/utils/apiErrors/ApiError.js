@@ -1,5 +1,3 @@
-'use strict';
-
 const httpStatus = require('http-status');
 
 /**
@@ -7,11 +5,12 @@ const httpStatus = require('http-status');
  */
 
 module.exports = class ApiError extends Error {
-  constructor (message, status) {
+  constructor(message, status) {
     super(message);
 
     this.name = this.constructor.name;
-    Error.captureStackTrace(this, this.constructor);  
-    this.status = status || httpStatus.INTERNAL_SERVER_ERROR;  
+    Error.captureStackTrace(this, this.constructor);
+    this.status = status || httpStatus.INTERNAL_SERVER_ERROR;
+    this.message = message;
   }
 };
