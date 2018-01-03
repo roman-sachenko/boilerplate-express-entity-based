@@ -9,6 +9,10 @@ module.exports = {
       return next();
     }
 
+    if (req.body.role) {
+      return next(new Forbidden('can not update user role'));
+    }
+
     const userIdRequested   = req.params.userId;
     const userIdCurrent     = req.user._id.toString();
 
