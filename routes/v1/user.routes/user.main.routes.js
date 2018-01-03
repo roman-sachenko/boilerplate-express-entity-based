@@ -6,6 +6,7 @@ const controller = require(`${basePath}/app/controllers/user.controllers/user.ma
 const acl = require(`${basePath}/app/middlewares/accessControl/entities/user/main`);
 const authMiddleware = require(`${basePath}/app/middlewares/accessControl/entities/auth/main`);
 const validator = require(`${basePath}/app/middlewares/dataValidators/entities/user/main`);
+const mapper = require(`${basePath}/app/middlewares/dataMappers/entities/user/main`);
 const loader = require(`${basePath}/app/middlewares/entityLoaders/entities/user/main`);
 
 
@@ -31,6 +32,7 @@ appRoute.put('/:userId',
   authMiddleware.isAuthenticated,
   acl.updateOne,
   validator.updateOne,
+  mapper.updateOne,
   loader.updateOne,
   controller.updateOne,
 );
