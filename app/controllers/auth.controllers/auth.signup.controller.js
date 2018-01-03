@@ -1,8 +1,7 @@
 const { UserService, DbService, ResponseService } = require(`${basePath}/app/services`);
-
-const helpers           = require(`${basePath}/app/helpers`);
-const { AlreadyExist }  = require(`${basePath}/app/utils/apiErrors`);
-const UserModel         = DbService.models().User;
+const helpers = require(`${basePath}/app/helpers`);
+const { AlreadyExist } = require(`${basePath}/app/utils/apiErrors`);
+const UserModel = DbService.models().User;
 
 
 module.exports = {
@@ -16,10 +15,10 @@ module.exports = {
 
     try {
       const { signUpData } = req.entities.mapped;
-      const useSearchResult = await UserModel.findOne({ email: signUpData.email }).select('_id');
-    
-  
-      if (!helpers.isObjectValid(useSearchResult)) {
+      const userSearchResult = await UserModel.findOne({ email: signUpData.email }).select('_id');
+
+
+      if (!helpers.isObjectValid(userSearchResult)) {
 
         const userService = new UserService(signUpData);
         let userCreated = await userService.create();

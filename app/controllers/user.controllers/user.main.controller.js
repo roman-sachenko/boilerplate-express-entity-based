@@ -1,17 +1,27 @@
-const { EntityLoaderService, ResponseService, UserService } = require(`${basePath}/app/services`);
+const { EntityLoaderService, ResponseService, UserService, DbService } = require(`${basePath}/app/services`);
+const UserModel = DbService.models().User;
+const helpers = require(`${basePath}/app/helpers`);
+const { AlreadyExist } = require(`${basePath}/app/utils/apiErrors`);
 
 
 module.exports = {
 
   async updateOne(req, res, next) {
-    const user        = EntityLoaderService.getEntity(req, 'user');
+    const user = EntityLoaderService.getEntity(req, 'user');
     const userService = new UserService(user);
+    const updateData = req.body;
 
     try {
-      const updatedUser =  await userService.update(req.body);
+      if (updateData.email && updateData.email !== req.user.email) {
+        const userSearchResult = await UserModel.findOne({ email: updateData.email }).select('_id');
+        if (helpers.isObjectValid(userSearchResult)) {
+          throw new AlreadyExist('email already exists');
+        }
+      }
+      const updatedUser = await userService.update(req.body);
       ResponseService.sendSuccessResponse(res, updatedUser);
-    } catch (err) {      
-      return next(err);  
+    } catch (err) {
+      return next(err);
     }
   },
 
@@ -35,7 +45,7 @@ module.exports = {
   },
 
   async deleteOne(req, res, next) {
-    const user        = EntityLoaderService.getEntity(req, 'user');
+    const user = EntityLoaderService.getEntity(req, 'user');
     const userService = new UserService(user);
 
     try {
