@@ -63,4 +63,4 @@ or
 
 or
 
-`$ pm2 start ./bin/start_[server environment].json`
+`$ pm2 start ./bin/start_server.json`
