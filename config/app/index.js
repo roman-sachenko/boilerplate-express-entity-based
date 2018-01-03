@@ -14,4 +14,11 @@ module.exports = {
   jwt: {
     secret: process.env.JWT_SECRET,
   },
+  api: {
+    aws: {
+      region: process.env.JWT_SECRET,
+      accessKey: process.env.AWS_ACCESS_KEY_ID,
+      secretKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
+  },
 };
