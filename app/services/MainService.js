@@ -9,7 +9,7 @@ module.exports = class MainService extends EventEmitter {
   }
 
   _getConfig() {
-    return this._config.mailService;
+    return this._config;
   }
 
   throwError(err) {
