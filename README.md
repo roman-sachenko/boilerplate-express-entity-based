@@ -11,7 +11,9 @@ The main idea is to split main functionality logically to a set of middlewares:
 Contains the following list of services by default:
 
 - authentication service (sign up, sing in)
+- email service (via Amazon SES)
 - database service (MongoDB)
+- response service (regular NodeJS response wrapper)
 - log service
 
 Commands:
@@ -63,4 +65,4 @@ or
 
 or
 
-`$ pm2 start ./bin/start_[server environment].json`
+`$ pm2 start ./bin/start_server.json`

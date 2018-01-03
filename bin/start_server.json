@@ -5,7 +5,7 @@
     "args"        : ["--toto=heya coco", "-d", "1"],
     "watch"       : true,
     "ignore_watch": [ "node_modules", "../logs", "./logs", "../.idea", ".idea", "../.git", ".git" ],
-    "node_args"   : "--harmony",
+    "node_args"   : "",
     "merge_logs"  : true,
     "cwd"         : "./",
     "env": {
