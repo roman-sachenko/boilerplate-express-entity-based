@@ -112,8 +112,9 @@ module.exports = class AuthService extends MainService {
       userSearchQuery = { 'tokens.refresh_token': token };
     }
 
-    const user = await self._getAuthEntities().findOne(userSearchQuery, '+role');
-    if (!user) {
+    const user = await self._getAuthEntities().findOne(userSearchQuery, '+role +tokens.refresh_token');
+    
+    if (!(user && user.tokens.refresh_token)) {
       throw new NotAuthorized();
     }
 
