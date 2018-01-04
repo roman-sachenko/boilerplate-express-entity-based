@@ -34,7 +34,6 @@ module.exports = {
       let userFound = {};
       UserModel.findOne({ email })
         .select('+password +role')
-        .lean()
         .then((user) => {
           userFound = user;
           if (!userFound) {

@@ -14,7 +14,7 @@ module.exports = {
   async isAuthenticated(req, res, next) {
 
     try {
-      await authService.verifyToken(req, AuthService.getStrategies().USER_LOCAL);
+      await authService.verifyAccessToken(req);
       return next();
     } catch (err) {
       return next(err);

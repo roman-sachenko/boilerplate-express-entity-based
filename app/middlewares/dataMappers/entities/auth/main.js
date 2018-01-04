@@ -1,7 +1,11 @@
 const mainMapper = require('../../main');
 
 module.exports = {
-  async regular(req, res, next) {
+  async signIn(req, res, next) {
+    return next();
+  },
+
+  async signUp(req, res, next) {
     delete req.body.role;
     mainMapper.setEntities(req, { signUpData: req.body });
     return next();

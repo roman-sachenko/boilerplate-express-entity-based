@@ -11,8 +11,10 @@ module.exports = {
   app: {
     isLoggerEnabled: parseInt(process.env.APP_LOGGER_ENABLED, 10) || 0,
   },
-  jwt: {
-    secret: process.env.JWT_SECRET,
+  auth: {
+    jwt: {
+      secret: process.env.JWT_SECRET,
+    },
   },
   api: {
     aws: {

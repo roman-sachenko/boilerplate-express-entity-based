@@ -8,8 +8,10 @@ appRoute.use('/', require('./main.routes'));
 /**
  * Auth Routes
  */
-appRoute.use('/auth', require('./auth.routes/auth.signup.routes'));
-appRoute.use('/auth', require('./auth.routes/auth.signin.routes'));
+appRoute.use('/auth', require('./auth.routes/auth.main.routes'));
+// appRoute.use('/auth', require('./auth.routes/auth.signin.routes'));
+// appRoute.use('/auth', require('./auth.routes/auth.signout.routes'));
+appRoute.use('/auth', require('./auth.routes/auth.token.routes'));
 /**
  * User Routes
  */
