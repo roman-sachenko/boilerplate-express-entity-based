@@ -106,7 +106,7 @@ module.exports = class AuthService extends MainService {
     const token = req.headers.authorization.split(' ')[1];
     const jwtPayload = await self._validateToken(token);
 
-    let userSearchQuery = { 'tokens.access_token': token };
+    let userSearchQuery = { _id: jwtPayload.id };
 
     if (tokenType === self._getTokenTypes().REFRESH_TOKEN) {
       userSearchQuery = { 'tokens.refresh_token': token };
@@ -159,20 +159,14 @@ module.exports = class AuthService extends MainService {
 
     const UserServiceProvider = self._getAuthEntities();
     const userServiceProvider = new UserServiceProvider(user);
-  
-    const updatedUser = await userServiceProvider.update({
+
+    await userServiceProvider.update({
       tokens: {
-        access_token: accessToken,
         refresh_token: refreshToken,
       },
     });
 
-    const mappedUser = updatedUser.toObject();
-    
-    delete mappedUser.tokens;
-    delete mappedUser.password;
-
-    return { accessToken, refreshToken, user: mappedUser };
+    return { accessToken, refreshToken };
   }
 
   /**
@@ -192,13 +186,12 @@ module.exports = class AuthService extends MainService {
 
     const updatedUser = await userServiceProvider.update({
       tokens: {
-        access_token: accessToken,
         refresh_token: refreshToken,
       },
     });
 
     const mappedUser = updatedUser.toObject();
-    
+
     delete mappedUser.tokens;
     delete mappedUser.password;
 

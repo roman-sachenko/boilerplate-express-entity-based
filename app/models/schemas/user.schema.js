@@ -20,7 +20,6 @@ const schemaData = {
     is_active: { type: Boolean, default: true },
   },
   tokens: {
-    access_token: { type: String, select: false },
     refresh_token: { type: String, select: false },
     forgot_password: { type: String, select: false },
   },
