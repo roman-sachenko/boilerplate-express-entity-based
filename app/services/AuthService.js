@@ -47,7 +47,7 @@ module.exports = class AuthService extends MainService {
    * @private
    */
   async _verifyToken(token) {
-    const  self = this;
+    const self = this;
     return new Promise((resolve, reject) => {
       return self.jwt.verify(token, self.config.jwt.secret, (err, jwtPayload) => {
         if (err) {
@@ -55,36 +55,6 @@ module.exports = class AuthService extends MainService {
         }
         resolve(jwtPayload);
       });
-    });
-  }
-
-  /**
-   * Perform authentication process using auth provider (Passport)
-   * @param req
-   * @param strategy
-   * @returns {Promise}
-   */
-  authenticate(req, strategy) {
-    if (!(strategy && req && Object.keys(req) && Object.keys(req).length)) {
-      throw new NotAuthorized('auth service failed to authenticate');
-    }
-
-    const self = this;
-    return new Promise((resolve, reject) => {
-      self.authProvider.authenticate(strategy, (err, user) => {
-        if (err) {
-          reject(new NotAuthorized());
-        } else {
-          if (user) {
-
-            const accessToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret, { expiresIn: 3600 });
-            const refreshToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
-
-            return resolve({ accessToken, refreshToken, user });
-          }
-          return reject(new NotAuthorized());
-        }
-      })(req);
     });
   }
 
@@ -106,7 +76,7 @@ module.exports = class AuthService extends MainService {
     // const tokenType = req.headers.authorization.split(' ')[0];
     const jwtPayload = await self._verifyToken(token);
     const user = await self.authEntities.User.findOne({ 'tokens.access_token': token }).select('+role');
-    
+
     if (!user) {
       throw new NotAuthorized();
     }
@@ -117,6 +87,45 @@ module.exports = class AuthService extends MainService {
     }
 
     throw new NotAuthorized();
-    
+
   }
+
+  _authenticate(req, strategy) {
+    const self = this;
+
+    return new Promise((resolve, reject) => {
+
+      if (!(strategy && req && Object.keys(req) && Object.keys(req).length)) {
+        return reject(new NotAuthorized('auth service failed to authenticate'));
+      }
+     
+      return self.authProvider.authenticate(strategy, (err, user) => {
+        if (user) {
+          return resolve(user);
+        }
+        return reject(new NotAuthorized());
+      })(req);
+    });
+  }
+
+  /**
+   * Perform authentication process using auth provider (Passport)
+   * @param req
+   * @param strategy
+   * @returns {Promise}
+   */
+  async authenticate(req, strategy) {
+    const self = this;
+    const user = await self._authenticate(req, strategy);
+    const accessToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret, { expiresIn: 3600 });
+    const refreshToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
+
+    return { accessToken, refreshToken, user };
+
+  }
+
+  signOut() {
+    return this;
+  }
+
 };
