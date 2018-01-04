@@ -62,6 +62,10 @@ module.exports = class AuthService extends MainService {
     return this._authEntities;
   }
 
+  _getTokenTypes() {
+    return this._tokenTypes;
+  }
+
   static getStrategies() {
     return authStrategies;
   }
@@ -72,7 +76,7 @@ module.exports = class AuthService extends MainService {
    * @returns {Promise}
    * @private
    */
-  async _verifyToken(token) {
+  async _validateToken(token) {
     const self = this;
     return new Promise((resolve, reject) => {
       return self._getJwdProvider().verify(token, self._getConfig().jwt.secret, (err, jwtPayload) => {
@@ -82,6 +86,44 @@ module.exports = class AuthService extends MainService {
         resolve(jwtPayload);
       });
     });
+  }
+
+
+  /**
+  * Verification function to decode and check incoming token
+  * Token format - "TYPE long-hashed-token"
+  * @param req
+  * @param strategy
+  * @returns {Promise.<TResult>}
+  */
+  async _verifyToken(req, tokenType) {
+    const self = this;
+
+    if (!req.headers.authorization) {
+      throw new NotAuthorized();
+    }
+
+    const token = req.headers.authorization.split(' ')[1];
+    const jwtPayload = await self._validateToken(token);
+
+    let userSearchQuery = { 'tokens.access_token': token };
+
+    if (tokenType === self._getTokenTypes().REFRESH_TOKEN) {
+      userSearchQuery = { 'tokens.refresh_token': token };
+    }
+
+    const user = await self._getAuthEntities().findOne(userSearchQuery, '+role');
+    if (!user) {
+      throw new NotAuthorized();
+    }
+
+    if (user._id.toString() === jwtPayload.id) {
+      req.user = user;
+      return user;
+    }
+
+    throw new NotAuthorized();
+
   }
 
   _authenticate(req, strategy) {
@@ -102,35 +144,35 @@ module.exports = class AuthService extends MainService {
     });
   }
 
-  /**
-   * Verification function to decode and check incoming token
-   * Token format - "TYPE long-hashed-token"
-   * @param req
-   * @param strategy
-   * @returns {Promise.<TResult>}
-   */
-  async verifyToken(req) {
+  async verifyAccessToken(req) {
+    return this._verifyToken(req, this._getTokenTypes().ACCESS_TOKEN);
+  }
+
+  async verifyRefreshToken(req) {
+    return this._verifyToken(req, this._getTokenTypes().REFRESH_TOKEN);
+  }
+
+  async refreshToken(user) {
     const self = this;
+    const accessToken = self._getJwdProvider().sign({ id: user._id }, self._getConfig().jwt.secret, { expiresIn: 3600 });
+    const refreshToken = self._getJwdProvider().sign({ id: user._id }, self._getConfig().jwt.secret);
 
-    if (!req.headers.authorization) {
-      throw new NotAuthorized();
-    }
+    const UserServiceProvider = self._getAuthEntities();
+    const userServiceProvider = new UserServiceProvider(user);
+  
+    const updatedUser = await userServiceProvider.update({
+      tokens: {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      },
+    });
 
-    const token = req.headers.authorization.split(' ')[1];
-    const jwtPayload = await self._verifyToken(token);
-    const user = await self._getAuthEntities().findOne({ 'tokens.access_token': token }, '+role');
+    const mappedUser = updatedUser.toObject();
+    
+    delete mappedUser.tokens;
+    delete mappedUser.password;
 
-    if (!user) {
-      throw new NotAuthorized();
-    }
-
-    if (user._id.toString() === jwtPayload.id) {
-      req.user = user;
-      return user;
-    }
-
-    throw new NotAuthorized();
-
+    return { accessToken, refreshToken, user: mappedUser };
   }
 
   /**
@@ -145,8 +187,22 @@ module.exports = class AuthService extends MainService {
     const accessToken = self._getJwdProvider().sign({ id: user._id }, self._getConfig().jwt.secret, { expiresIn: 3600 });
     const refreshToken = self._getJwdProvider().sign({ id: user._id }, self._getConfig().jwt.secret);
 
-    return { accessToken, refreshToken, user };
+    const UserServiceProvider = self._getAuthEntities();
+    const userServiceProvider = new UserServiceProvider(user);
 
+    const updatedUser = await userServiceProvider.update({
+      tokens: {
+        access_token: accessToken,
+        refresh_token: refreshToken,
+      },
+    });
+
+    const mappedUser = updatedUser.toObject();
+    
+    delete mappedUser.tokens;
+    delete mappedUser.password;
+
+    return { accessToken, refreshToken, user: mappedUser };
   }
 
 };

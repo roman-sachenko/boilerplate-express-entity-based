@@ -1,18 +1,12 @@
-const { UserService, DbService, ResponseService } = require(`${basePath}/app/services`);
+const { AuthService, DbService, ResponseService, UserService } = require(`${basePath}/app/services`);
+const authStrategiesEnum = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
 const helpers = require(`${basePath}/app/helpers`);
 const { AlreadyExist } = require(`${basePath}/app/utils/apiErrors`);
 const UserModel = DbService.models().User;
-
+const authService = new AuthService();
 
 module.exports = {
-  /**
-   * Regular Sing Up Process using manually provided details
-   * @param req
-   * @param res
-   * @param next
-   */
-  async regular(req, res, next) {
-
+  async signUp(req, res, next) {
     try {
       const { signUpData } = req.entities.mapped;
       const userSearchResult = await UserModel.findOne({ email: signUpData.email }).select('_id');
@@ -34,6 +28,24 @@ module.exports = {
     } catch (err) {
       next(err);
     }
-
   },
+
+  async signIn(req, res, next) {
+    try {
+      const authResult = await authService.authenticate(req, authStrategiesEnum.USER_LOCAL);
+      ResponseService.sendSuccessResponse(res, authResult);
+    } catch (err) {
+      return next(err);
+    }
+  },
+
+  async signOut(req, res, next) {
+    try {
+      await AuthService.signOut(req.user);
+      return ResponseService.sendSuccessResponse(res, true);
+    } catch (err) {
+      return next(err);
+    }
+  },
+
 };

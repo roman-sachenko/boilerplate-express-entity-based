@@ -10,7 +10,7 @@ const mapper = require(`${basePath}/app/middlewares/dataMappers/entities/auth/si
 /**
  * Regular sign in process using email and password
  */
-appRoute.post('/signup/regular/',
+appRoute.post('/signup/regular',
   validator.regular, 
   mapper.regular,
   controller.regular);

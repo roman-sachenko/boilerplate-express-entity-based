@@ -25,7 +25,6 @@ module.exports = {
   },
 
   async getOne(req, res, next) {
-
     try {
       const userFound = await UserModel.findOne({ _id: req.params.userId }).lean();
 

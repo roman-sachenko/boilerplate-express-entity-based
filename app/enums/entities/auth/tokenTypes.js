@@ -3,7 +3,6 @@
  */
 
 module.exports = {
-  REGULAR: 'REGULAR',
-  FACEBOOK: 'FACEBOOK',
-  GOOGLE: 'GOOGLE',
+  ACCESS_TOKEN: 'accessToken',
+  REFRESH_TOKEN: 'refreshToken',
 };
