@@ -26,7 +26,7 @@ appRoute.post('/signin',
 
 appRoute.post('/signout',
   authMiddleware.isAuthenticated,
-  // controller.signOut,
+  controller.signOut,
 );
 
 
