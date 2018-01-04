@@ -10,6 +10,7 @@ appRoute.use('/', require('./main.routes'));
  */
 appRoute.use('/auth', require('./auth.routes/auth.signup.routes'));
 appRoute.use('/auth', require('./auth.routes/auth.signin.routes'));
+appRoute.use('/auth', require('./auth.routes/auth.signout.routes'));
 /**
  * User Routes
  */

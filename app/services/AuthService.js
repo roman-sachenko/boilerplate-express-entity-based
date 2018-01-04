@@ -1,4 +1,5 @@
-const config = require(`${basePath}/config/app/`);
+const UserService = require(`${basePath}/app/services/UserService`);
+const config = require(`${basePath}/config/app/`).auth;
 const authStrategies = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
 const tokenTypes = require(`${basePath}/app/enums/`).AUTH.TOKEN_TYPES;
 const { NotAuthorized } = require(`${basePath}/app/utils/apiErrors`);
@@ -13,31 +14,56 @@ let instance = null;
  */
 
 module.exports = class AuthService extends MainService {
-  constructor(authProvider, inputConfig) {
+  constructor() {
     if (!instance) {
       super('Auth Service');
-      const { DbService } = require(`${basePath}/app/services`);
-      this.authProvider = authProvider || passport;
-      this.config = inputConfig || config;
-      this.tokenTypes = tokenTypes;
-      this.jwt = jwt;
-      this.authEntities = DbService.models();
-      this.authStrategies = authStrategies;
+      this._setService();
       instance = this;
     }
     return instance;
   }
 
-  static getStrategies() {
-    return authStrategies;
+  static signOut(user) {
+    const userModel = new UserService(user);
+    return userModel.update({
+      tokens: {
+        access_token: null,
+        refresh_token: null,
+      },
+    });
   }
 
-  static generatePasswordRecoveryToken() {
-
+  _setService() {
+    this._authProvider = passport;
+    this._tokenTypes = tokenTypes;
+    this._jwt = jwt;
+    this._authEntities = UserService;
+    this._authStrategies = authStrategies;
+    this._config = config;
   }
 
   _getStrategies() {
     return this.authStrategies;
+  }
+
+  _getConfig() {
+    return this._config;
+  }
+
+  _getAuthProvider() {
+    return this._authProvider;
+  }
+
+  _getJwdProvider() {
+    return this._jwt;
+  }
+
+  _getAuthEntities() {
+    return this._authEntities;
+  }
+
+  static getStrategies() {
+    return authStrategies;
   }
 
   /**
@@ -49,12 +75,30 @@ module.exports = class AuthService extends MainService {
   async _verifyToken(token) {
     const self = this;
     return new Promise((resolve, reject) => {
-      return self.jwt.verify(token, self.config.jwt.secret, (err, jwtPayload) => {
+      return self._getJwdProvider().verify(token, self._getConfig().jwt.secret, (err, jwtPayload) => {
         if (err) {
           reject(new NotAuthorized());
         }
         resolve(jwtPayload);
       });
+    });
+  }
+
+  _authenticate(req, strategy) {
+    const self = this;
+
+    return new Promise((resolve, reject) => {
+
+      if (!(strategy && req && Object.keys(req) && Object.keys(req).length)) {
+        return reject(new NotAuthorized('auth service failed to authenticate'));
+      }
+
+      return self._getAuthProvider().authenticate(strategy, (err, user) => {
+        if (user) {
+          return resolve(user);
+        }
+        return reject(new NotAuthorized());
+      })(req);
     });
   }
 
@@ -73,9 +117,8 @@ module.exports = class AuthService extends MainService {
     }
 
     const token = req.headers.authorization.split(' ')[1];
-    // const tokenType = req.headers.authorization.split(' ')[0];
     const jwtPayload = await self._verifyToken(token);
-    const user = await self.authEntities.User.findOne({ 'tokens.access_token': token }).select('+role');
+    const user = await self._getAuthEntities().findOne({ 'tokens.access_token': token }, '+role');
 
     if (!user) {
       throw new NotAuthorized();
@@ -90,24 +133,6 @@ module.exports = class AuthService extends MainService {
 
   }
 
-  _authenticate(req, strategy) {
-    const self = this;
-
-    return new Promise((resolve, reject) => {
-
-      if (!(strategy && req && Object.keys(req) && Object.keys(req).length)) {
-        return reject(new NotAuthorized('auth service failed to authenticate'));
-      }
-     
-      return self.authProvider.authenticate(strategy, (err, user) => {
-        if (user) {
-          return resolve(user);
-        }
-        return reject(new NotAuthorized());
-      })(req);
-    });
-  }
-
   /**
    * Perform authentication process using auth provider (Passport)
    * @param req
@@ -117,15 +142,11 @@ module.exports = class AuthService extends MainService {
   async authenticate(req, strategy) {
     const self = this;
     const user = await self._authenticate(req, strategy);
-    const accessToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret, { expiresIn: 3600 });
-    const refreshToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
+    const accessToken = self._getJwdProvider().sign({ id: user._id }, self._getConfig().jwt.secret, { expiresIn: 3600 });
+    const refreshToken = self._getJwdProvider().sign({ id: user._id }, self._getConfig().jwt.secret);
 
     return { accessToken, refreshToken, user };
 
-  }
-
-  signOut() {
-    return this;
   }
 
 };
