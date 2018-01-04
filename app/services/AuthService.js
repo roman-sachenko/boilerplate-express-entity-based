@@ -76,10 +76,11 @@ module.exports = class AuthService extends MainService {
           reject(new NotAuthorized());
         } else {
           if (user) {
-            delete user.password;
-            delete user.tokens;
-            const token = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
-            return resolve({ token, user });
+
+            const accessToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret, { expiresIn: 3600 });
+            const refreshToken = self.jwt.sign({ id: user._id }, self.config.jwt.secret);
+
+            return resolve({ accessToken, refreshToken, user });
           }
           return reject(new NotAuthorized());
         }
@@ -104,12 +105,18 @@ module.exports = class AuthService extends MainService {
     const token = req.headers.authorization.split(' ')[1];
     // const tokenType = req.headers.authorization.split(' ')[0];
     const jwtPayload = await self._verifyToken(token);
-    const user = await self.authEntities.User.findOne({ _id: jwtPayload.id }).select('+role');
+    const user = await self.authEntities.User.findOne({ 'tokens.access_token': token }).select('+role');
+    
+    if (!user) {
+      throw new NotAuthorized();
+    }
 
-    if (user) {
+    if (user._id.toString() === jwtPayload.id) {
       req.user = user;
       return user;
     }
+
     throw new NotAuthorized();
+    
   }
 };
