@@ -9,6 +9,8 @@
     "start": "node server.js",
     "start:staging": "node NODE_ENV=staging server.js",
     "start:production": "node NODE_ENV=production server.js",
+    "security-scan": "snyk wizard",
+    "retire-scan": "retire",
     "command:create_admin": "node ./commands/user/admin/createAdminUser"
   },
   "config": {
@@ -37,6 +39,7 @@
     "moment": "^2.18.1",
     "mongoose": "^4.10.4",
     "nodemon": "^1.12.5",
+    "nsp": "^3.1.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google": "^0.3.0",
@@ -54,7 +57,8 @@
     "ghooks": "^2.0.2",
     "mocha": "^4.0.1",
     "pm2": "^2.4.6",
-    "snyk": "^1.54.1",
+    "retire": "^1.4.0",
+    "snyk": "^1.65.1",
     "supertest": "^3.0.0"
   }
 }
