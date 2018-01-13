@@ -1,5 +1,5 @@
-const cool                = require('cool-ascii-faces');
-const { ResponseService }  = require(`${basePath}/app/services`);
+const cool = require('cool-ascii-faces');
+const { ResponseService } = require(`${basePath}/app/services`);
 
 module.exports = {
   async main(req, res, next) {

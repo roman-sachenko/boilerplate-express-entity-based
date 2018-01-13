@@ -1,5 +1,4 @@
-const { EntityLoaderService, ResponseService, UserService, DbService } = require(`${basePath}/app/services`);
-const UserModel = DbService.models().User;
+const { EntityLoaderService, ResponseService, UserService } = require(`${basePath}/app/services`);
 const helpers = require(`${basePath}/app/helpers`);
 const { AlreadyExist } = require(`${basePath}/app/utils/apiErrors`);
 
@@ -13,7 +12,7 @@ module.exports = {
 
     try {
       if (updateData.email && updateData.email !== req.user.email) {
-        const userSearchResult = await UserModel.findOne({ email: updateData.email }).select('_id');
+        const userSearchResult = await UserService.findOne({ query: { email: updateData.email }, options: { select: '_id' } });
         if (helpers.isObjectValid(userSearchResult)) {
           throw new AlreadyExist('email already exists');
         }

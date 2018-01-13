@@ -1,9 +1,7 @@
-const { DbService } = require(`${basePath}/app/services/`);
+const { UserService } = require(`${basePath}/app/services/`);
 const { NotFound } = require(`${basePath}/app/utils/apiErrors`);
 const mainHelper = require(`${basePath}/app/helpers`);
 const MainLoader = require('../../main');
-
-const UserModel = DbService.models().User;
 
 
 module.exports = {
@@ -13,8 +11,8 @@ module.exports = {
 
   async changePassword(req, res, next) {
     try {
-      const userFound = await UserModel
-        .findOne({ _id: req.params.userId, _company: req.params.companyId });
+      const userFound = await UserService
+        .findOne({ query: { _id: req.params.userId, _company: req.params.companyId } });
 
       if (!mainHelper.isObjectValid(userFound)) {
         throw new NotFound('user not found');
