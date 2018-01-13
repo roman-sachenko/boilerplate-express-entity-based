@@ -4,7 +4,7 @@
   "description": "Express based structure and entity generator",
   "main": "server",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test/integration --exit",
+    "test": "./node_modules/mocha/bin/mocha ./test/endToEnd --exit",
     "lint": "./node_modules/.bin/eslint  . *.js",
     "lint:fix": "./node_modules/.bin/eslint  . *.js --fix",
     "start": "./node_modules/pm2/bin/pm2 start ./bin/start_server.json",
