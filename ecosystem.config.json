@@ -2,7 +2,7 @@
   "apps": [
     {
       "name": "express-lemon",
-      "script": "server.js",
+      "script": "./bin/server.js",
       "args": [
         "--toto=heya coco",
         "-d",
@@ -17,7 +17,7 @@
       ],
       "node_args": "",
       "merge_logs": true,
-      "cwd": "./bin",
+      "cwd": "./",
       "env": {
         
       }

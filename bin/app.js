@@ -46,7 +46,9 @@ http.Server(app).listen(process.env.ENV_PORT, () => {
 /**
  * Established DB Connection
  */
-dbService.connect();
+dbService.connect((err) => {
+  throw new Error(err);
+});
 
 /**
  * Sets App Middlewares
