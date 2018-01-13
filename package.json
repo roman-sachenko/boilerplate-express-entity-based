@@ -9,6 +9,7 @@
     "lint:fix": "./node_modules/.bin/eslint  . *.js --fix",
     "start": "./node_modules/pm2/bin/pm2 start ecosystem.config.json",
     "check:security": "./node_modules/nsp/bin/nsp check",
+    "check:security:dev": "snyk wizard",
     "check:modules": "./node_modules/retire/bin/retire",
     "check": "npm run check:security && npm run check:modules && npm run lint",
     "command:create_admin": "node ./commands/user/admin/createAdminUser"
