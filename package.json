@@ -6,12 +6,11 @@
   "scripts": {
     "test": "./node_modules/mocha/bin/mocha ./test/integration --exit",
     "lint": "./node_modules/.bin/eslint  . *.js",
-    "start": "node server.js",
-    "start:staging": "node NODE_ENV=staging server.js",
-    "start:production": "node NODE_ENV=production server.js",
-    "security-scan": "snyk wizard",
-    "retire-scan": "retire",
-    "full-check": "npm run lint && npm test && retire && snyk wizard",
+    "lint:fix": "./node_modules/.bin/eslint  . *.js --fix",
+    "start": "./node_modules/pm2/bin/pm2 start ./bin/start_server.json",
+    "check:security": "./node_modules/nsp/bin/nsp check",
+    "check:modules": "./node_modules/retire/bin/retire",
+    "check": "npm run check:security && npm run check:modules && npm run lint",
     "command:create_admin": "node ./commands/user/admin/createAdminUser"
   },
   "config": {
@@ -40,7 +39,6 @@
     "moment": "^2.18.1",
     "mongoose": "^4.10.4",
     "nodemon": "^1.12.5",
-    "nsp": "^3.1.0",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-google": "^0.3.0",
@@ -57,6 +55,7 @@
     "eslint-plugin-import": "^2.8.0",
     "ghooks": "^2.0.2",
     "mocha": "^4.0.1",
+    "nsp": "^3.1.0",
     "pm2": "^2.4.6",
     "retire": "^1.4.0",
     "snyk": "^1.65.1",
