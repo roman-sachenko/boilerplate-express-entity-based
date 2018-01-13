@@ -2,7 +2,7 @@ const UserService = require(`${basePath}/app/services/UserService`);
 const config = require(`${basePath}/config/app/`).auth;
 const authStrategies = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
 const tokenTypes = require(`${basePath}/app/enums/`).AUTH.TOKEN_TYPES;
-const { NotAuthorized } = require(`${basePath}/app/utils/apiErrors`);
+const { BadRequest } = require(`${basePath}/app/utils/apiErrors`);
 const MainService = require('./MainService');
 const passport = require('passport');
 const jwt = require('jsonwebtoken');
@@ -81,7 +81,7 @@ module.exports = class AuthService extends MainService {
     return new Promise((resolve, reject) => {
       return self._getJwdProvider().verify(token, self._getConfig().jwt.secret, (err, jwtPayload) => {
         if (err) {
-          reject(new NotAuthorized());
+          reject(new BadRequest());
         }
         resolve(jwtPayload);
       });
@@ -100,7 +100,7 @@ module.exports = class AuthService extends MainService {
     const self = this;
 
     if (!req.headers.authorization) {
-      throw new NotAuthorized();
+      throw new BadRequest();
     }
 
     const token = req.headers.authorization.split(' ')[1];
@@ -112,10 +112,10 @@ module.exports = class AuthService extends MainService {
       userSearchQuery = { 'tokens.refresh_token': token };
     }
 
-    const user = await self._getAuthEntities().findOne(userSearchQuery, '+role +tokens.refresh_token');
+    const user = await self._getAuthEntities().findOne({ query: userSearchQuery, options: { select: '+role +tokens.refresh_token' } });
     
     if (!(user && user.tokens.refresh_token)) {
-      throw new NotAuthorized();
+      throw new BadRequest();
     }
 
     if (user._id.toString() === jwtPayload.id) {
@@ -123,7 +123,7 @@ module.exports = class AuthService extends MainService {
       return user;
     }
 
-    throw new NotAuthorized();
+    throw new BadRequest();
 
   }
 
@@ -133,14 +133,14 @@ module.exports = class AuthService extends MainService {
     return new Promise((resolve, reject) => {
 
       if (!(strategy && req && Object.keys(req) && Object.keys(req).length)) {
-        return reject(new NotAuthorized('auth service failed to authenticate'));
+        return reject(new BadRequest('auth service failed to authenticate'));
       }
 
       return self._getAuthProvider().authenticate(strategy, (err, user) => {
         if (user) {
           return resolve(user);
         }
-        return reject(new NotAuthorized());
+        return reject(new BadRequest());
       })(req);
     });
   }
