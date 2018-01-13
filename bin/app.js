@@ -1,5 +1,5 @@
 const path = require('path');
-global.basePath = path.normalize(`${__dirname}`);
+global.basePath = path.normalize(`${__dirname}/..`);
 
 const WorkEnvs = require(`${basePath}/app/enums`).WORK_ENVS;
 process.env.NODE_ENV = process.env.NODE_ENV || WorkEnvs.LOCAL;
@@ -51,7 +51,7 @@ app
     customValidators,
   }))
   // .use(cors({}))
-  .use('/api/v1', require('./routes/v1'))
+  .use('/api/v1', require(`${basePath}/routes/v1`))
   .use(routeNotFoundHandler)
   .use(mainErrorHandler);
 
