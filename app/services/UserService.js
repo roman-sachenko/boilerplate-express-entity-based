@@ -6,13 +6,31 @@ const CryptoService = require(`${basePath}/app/services/CryptoService`);
 module.exports = class UserService extends MainService {
   constructor(userData) {
     super('User Service');
-    this._userProvider = DbService.models().User;
+    this._userProvider = DbService.models('User');
     this._userData = userData;
     this._EncodeService = CryptoService;
   }
 
-  static async findOne(...args) {
-    return DbService.models().User.findOne(...args);
+  static async findOne(params) {
+    const options = params.options || {};
+    const query = params.query || {};
+    const lean = !!(options && options.lean); 
+    const select = options.select || '';
+
+    return DbService.models('User').findOne(query).select(select).lean(lean);
+  }
+
+  static async findAll(params) {
+    const options = params.options || {};
+    const query = params.query || {};
+    const lean = !!(options && options.lean); 
+    const select = options.select || '';
+
+    return DbService.models('User').find(query).select(select).lean(lean);
+  }
+
+  static getRoles() {
+    return DbService.models('User').ROLES;
   }
 
   async create() {
