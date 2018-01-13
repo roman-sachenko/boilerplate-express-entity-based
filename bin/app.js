@@ -4,17 +4,28 @@ global.basePath = path.normalize(`${__dirname}/..`);
 const WorkEnvs = require(`${basePath}/app/enums`).WORK_ENVS;
 process.env.NODE_ENV = process.env.NODE_ENV || WorkEnvs.LOCAL;
 
-require(`${basePath}/app/models/User.model`);
+/**
+ * Initialize Models
+ */
+require(`${basePath}/app/models/`);
 
+
+/**
+ * Require Needed Services
+ */
 const { DbService, ResponseService, LogService } = require(`${basePath}/app/services`);
-
 const appConfig = require(`${basePath}/config/app`);
-const { NotFound } = require(`${basePath}/app/utils/apiErrors`);
 const customValidators = require(`${basePath}/app/validators/custom`);
 
+/**
+ * Create initial service instances
+ */
 const dbService = new DbService({ connectionString: appConfig.db.connectionString });
 const httpLogger = appConfig.app.isLoggerEnabled ? new LogService({ dirPathRelative: '/http-logs' }) : null;
 
+/**
+ * Require platform services and modules
+ */
 const passport = require(`${basePath}/app/libs/passport`).init(appConfig);
 const http = require('http');
 const App = require('express');
@@ -27,10 +38,8 @@ const bodyParser = require('body-parser');
 /**
  * Starts app server
  */
-const port = process.env.ENV_PORT || appConfig.env.PORT;
-
-http.Server(app).listen(port, () => {
-  console.log(`Hell yeah on port  ${port}`);
+http.Server(app).listen(process.env.ENV_PORT, () => {
+  console.log(`Hell yeah on port  ${process.env.ENV_PORT}`);
 });
 
 
