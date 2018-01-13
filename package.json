@@ -4,7 +4,7 @@
   "description": "Express based structure and entity generator",
   "main": "server",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test/endToEnd --exit",
+    "test": "jest ./test/unit/index.js && ./node_modules/mocha/bin/mocha ./test/endToEnd --exit",
     "lint": "./node_modules/.bin/eslint  . *.js",
     "lint:fix": "./node_modules/.bin/eslint  . *.js --fix",
     "start": "./node_modules/pm2/bin/pm2 start ecosystem.config.json",
@@ -54,6 +54,7 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "ghooks": "^2.0.2",
+    "jest": "^22.0.6",
     "mocha": "^4.0.1",
     "nsp": "^3.1.0",
     "pm2": "^2.4.6",
