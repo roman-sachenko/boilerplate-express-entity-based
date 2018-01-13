@@ -4,11 +4,13 @@
   "description": "Express based structure and entity generator",
   "main": "server",
   "scripts": {
-    "test": "./node_modules/mocha/bin/mocha ./test/integration --exit",
+    "test": "jest ./test/unit/index.js && ./node_modules/mocha/bin/mocha ./test/endToEnd --exit",
     "lint": "./node_modules/.bin/eslint  . *.js",
-    "start": "node server.js",
-    "start:staging": "node NODE_ENV=staging server.js",
-    "start:production": "node NODE_ENV=production server.js",
+    "lint:fix": "./node_modules/.bin/eslint  . *.js --fix",
+    "start": "./node_modules/pm2/bin/pm2 start ecosystem.config.json",
+    "check:security": "./node_modules/nsp/bin/nsp check",
+    "check:modules": "./node_modules/retire/bin/retire",
+    "check": "npm run check:security && npm run check:modules && npm run lint",
     "command:create_admin": "node ./commands/user/admin/createAdminUser"
   },
   "config": {
@@ -52,9 +54,12 @@
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",
     "ghooks": "^2.0.2",
+    "jest": "^22.0.6",
     "mocha": "^4.0.1",
+    "nsp": "^3.1.0",
     "pm2": "^2.4.6",
-    "snyk": "^1.54.1",
+    "retire": "^1.4.0",
+    "snyk": "^1.65.1",
     "supertest": "^3.0.0"
   }
 }

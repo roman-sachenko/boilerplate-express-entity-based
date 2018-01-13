@@ -1,8 +1,8 @@
-const { AuthService, DbService } = require(`${basePath}/app/services`);
+const { AuthService, UserService } = require(`${basePath}/app/services`);
 const { Forbidden } = require(`${basePath}/app/utils/apiErrors`);
 
-const authService   = new AuthService();
-const UserModel     = DbService.models().User;
+const authService = new AuthService();
+const userRoles = UserService.getRoles();
 
 
 module.exports = {
@@ -22,7 +22,7 @@ module.exports = {
   },
 
   async isAdmin(req, res, next) {
-    if (req.user && req.user.role === UserModel.ROLES.ADMIN) {
+    if (req.user && req.user.role === userRoles.ADMIN) {
       return next();
     }
     return next(new Forbidden());

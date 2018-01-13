@@ -1,14 +1,14 @@
 const cpusLength = require('os').cpus().length;
 const path = require('path');
-global.basePath = path.normalize(`${__dirname}`);
+global.basePath = path.normalize(`${__dirname}/..`);
 /**
  * Parses .env files to retrieve config variables
  */
 require('dotenv-safe').load({ path: `${basePath}/.env`, sample: `${basePath}/.env_example` });
 
 const cluster = require('cluster');
-const { LogService } = require('./app/services');
-const appConfig = require('./config/app');
+const { LogService } = require('../app/services');
+const appConfig = require('../config/app');
 
 const httpLogger = appConfig.app.isLoggerEnabled ? new LogService({ dirPathRelative: '/http-logs' }) : null;
 const numberOfInstances = appConfig.env.instancesCount || cpusLength;

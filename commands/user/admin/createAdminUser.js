@@ -21,11 +21,10 @@ require(`${basePath}/app/models/User.model`);
  * Include Services
  * @type {*}
  */
-const { DbService, UserService } = require(`${basePath}/app/services`);
+const { UserService, DbService } = require(`${basePath}/app/services`);
 const appConfig = require(`${basePath}/config/app`);
 
 const dbService = new DbService({ connectionString: appConfig.db.connectionString });
-const UserModel = DbService.models().User;
 
 const newAdminData = require('./config').adminData;
 
@@ -40,7 +39,7 @@ dbService.connect();
  */
 const createAdmin = async () => {
   try {
-    const searchResult = await UserModel.findOne({ email: newAdminData.email });
+    const searchResult = await UserService.findOne({ query: { email: newAdminData.email } });
 
     if (isObjectValid(searchResult)) {
       throw new Error('Already Exists');
@@ -50,7 +49,7 @@ const createAdmin = async () => {
     await userService.create();
 
     log('SUCCESS: Admin user has been created');
-    process.exit();
+    exitScript();
 
   } catch (err) {
     log(`ERROR: ${err}`);

@@ -1,15 +1,14 @@
-const { AuthService, DbService, ResponseService, UserService } = require(`${basePath}/app/services`);
+const { AuthService, ResponseService, UserService } = require(`${basePath}/app/services`);
 const authStrategiesEnum = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
 const helpers = require(`${basePath}/app/helpers`);
 const { AlreadyExist } = require(`${basePath}/app/utils/apiErrors`);
-const UserModel = DbService.models().User;
 const authService = new AuthService();
 
 module.exports = {
   async signUp(req, res, next) {
     try {
       const { signUpData } = req.entities.mapped;
-      const userSearchResult = await UserModel.findOne({ email: signUpData.email }).select('_id');
+      const userSearchResult = await UserService.findOne({ query: { email: signUpData.email }, options: { select: '_id' } });
 
 
       if (!helpers.isObjectValid(userSearchResult)) {

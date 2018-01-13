@@ -33,7 +33,10 @@ module.exports = class DbService extends MainService {
   }
 
 
-  static models() {
+  static models(modelName) {
+    if (modelName) {
+      return dbServiceProvider.models[modelName];
+    }
     return dbServiceProvider.models;
   }
 

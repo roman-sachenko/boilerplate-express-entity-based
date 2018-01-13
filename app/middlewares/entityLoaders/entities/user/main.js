@@ -1,15 +1,14 @@
 const MainLoader    = require('../../main');
-const { DbService } = require(`${basePath}/app/services/`);
+const { UserService } = require(`${basePath}/app/services/`);
 const { NotFound }  = require(`${basePath}/app/utils/apiErrors`);
 const mainHelper    = require(`${basePath}/app/helpers`);
-const UserModel     = DbService.models().User;
 
 module.exports = {
   
   async updateOne(req, res, next) {
 
     try {
-      const userFound = await UserModel.findOne({ _id: req.params.userId });
+      const userFound = await UserService.findOne({ query: { _id: req.params.userId } });
 
       if (!mainHelper.isObjectValid(userFound)) {
         throw new NotFound('user not found');
@@ -26,8 +25,7 @@ module.exports = {
 
   async getOne(req, res, next) {
     try {
-      const userFound = await UserModel.findOne({ _id: req.params.userId }).lean();
-
+      const userFound = await UserService.findOne({ query: { _id: req.params.userId }, options: { lean: true } });
       if (!mainHelper.isObjectValid(userFound)) {
         throw new NotFound('user not found');
       }
@@ -43,7 +41,7 @@ module.exports = {
   async getAll(req, res, next) {
 
     try {
-      const usersFound = await UserModel.find({}).lean();
+      const usersFound = await UserService.findAll({ query: {}, options: { lean: true } });
       MainLoader.setEntities(req, { users: usersFound });
       return next();
 
@@ -55,7 +53,7 @@ module.exports = {
   async deleteOne(req, res, next) {
 
     try {
-      const userFound = await UserModel.findOne({ _id: req.params.userId }).select('_id');
+      const userFound = await UserService.findOne({ query: { _id: req.params.userId }, options: { select: '_id' } });
 
       if (!mainHelper.isObjectValid(userFound)) {
         throw new NotFound('user not found');

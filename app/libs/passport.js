@@ -1,11 +1,10 @@
 const passport = require('passport');
 const LocalStrategy = require('passport-local').Strategy;
 
-const { CryptoService, DbService } = require(`${basePath}/app/services`);
+const { CryptoService, UserService } = require(`${basePath}/app/services`);
 
-const { NotAuthorized } = require(`${basePath}/app/utils/apiErrors`);
+const { BadRequest } = require(`${basePath}/app/utils/apiErrors`);
 const crypto = new CryptoService();
-const UserModel = DbService.models().User;
 
 const authStrategiesEnum = require(`${basePath}/app/enums/`).AUTH.STRATEGIES;
 
@@ -18,7 +17,7 @@ module.exports = {
     });
 
     passport.deserializeUser((id, done) => {
-      UserModel.findById(id, (err, user) => {
+      UserService.findOne({ query: { _id: id } }, (err, user) => {
         done(err, user);
       });
     });
@@ -32,20 +31,19 @@ module.exports = {
     }, (email, password, done) => {
 
       let userFound = {};
-      UserModel.findOne({ email })
-        .select('+password +role')
+      UserService.findOne({ query: { email }, options: { select: '+password +role' } })
         .then((user) => {
-          userFound = user;
-          if (!userFound) {
+          if (!user) {
             return done(true, false);
           }
+          userFound = user;
           return crypto.verifyPassword(password, userFound.password);
         })
         .then((isMatch) => {
           if (isMatch) {
             return done(null, userFound);
           }
-          return done(new NotAuthorized(), false);
+          return done(new BadRequest(), false);
         })
         .catch((err) => {
           return done(err);

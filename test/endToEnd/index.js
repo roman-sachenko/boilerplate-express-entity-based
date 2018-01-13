@@ -1,5 +1,5 @@
 const path = require('path');
-global.basePath = path.normalize(`${__dirname}/../../`);
+global.basePath = path.normalize(`${__dirname}/../..`);
 
 /**
  * Parses .env files to retrieve config variables
@@ -9,7 +9,7 @@ require('dotenv-safe').load({ path: `${basePath}/.env.test`, sample: `${basePath
 /**
  * Require Application (start app)
  */
-const app = require(`${basePath}/app`);
+const app = require(`${basePath}/bin/app`);
 
 const { DbService } = require(`${basePath}/app/services`);
 
@@ -22,7 +22,7 @@ describe('Main Test Runner', () => {
   });
 
   it('Should Run All Tests', async () => {
-    require('./main')(app);
+    return require('./main')(app);
   });
 
   after(async () => {
