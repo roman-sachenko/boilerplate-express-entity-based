@@ -11,11 +11,11 @@
   * [Running the package](#running-the-package)
 
 
-# Description
+## Description
 
 Initial API Architecture. Contains a basic and must-have set of modules, services and configurations. 
 
-## Ideology
+### Ideology
 
 Use Express Middlewares in order to split functionality and have logically separated parts. Each router/endpoint may have a chain of middlewares to validate data, load data from data sources, map data, check permissions and perform the main business logic.
 
@@ -37,12 +37,12 @@ appRoute.get('/:userId',
 ```
 
 
-## Middleware Entities
+### Middleware Entities
 `./app/middlewares/`
 
 Chain items to perform own specific functionality.
 
-### Access Control (accessControl)
+#### Access Control (accessControl)
 
 Checks if the current request may reach a business logic. This layer may check if a logged in user has permissions to perform this request. 
 
@@ -64,7 +64,7 @@ async getOne(req, res, next) {
 },
 ```
 
-### Data Mappers (dataMappers)
+#### Data Mappers (dataMappers)
 
 Maps Outgoing/Incoming data for further processing by another function.
 
@@ -77,7 +77,7 @@ updateOne(req, res, next) {
 },
 ```
 
-### Data Validators (dataValidators)
+#### Data Validators (dataValidators)
 
 Validates incoming data according to installed rules to prevent invalid data from handling.
 
@@ -89,7 +89,7 @@ deleteOne(req, res, next) {
 },
 ```
 
-### Entity Loaders (entityLoaders)
+#### Entity Loaders (entityLoaders)
 
 Loads/Gets required by business logic entities/objects from available data sources. The system may retrieve users or related entities from a database or process a data.
 
@@ -113,7 +113,8 @@ async getOne(req, res, next) {
 },
 ```
 
-## Services
+
+### Services
 `./app/services/`
 
 Services perform single-minded focus functionality to be invoked inside the application for handling business logic.
@@ -127,44 +128,48 @@ Services perform single-minded focus functionality to be invoked inside the appl
 - Response Service
 - User Service
 
-## Commands
+
+### Commands
 `./commands`
 
 - Admin User creation script  
 
-# Installation
 
-## Requirements
+## Installation
 
-### Node
+### Requirements
+
+#### Node
 
 Visit https://nodejs.org for installation details.
 
-### npm
+#### npm
 
 Node Package Manager, should come bundled with node.
 
-### MongoDB
+#### MongoDB
 
 Install MongoDB https://docs.mongodb.com/manual/installation/
 
-## Installation Steps
 
-### Clone the package
+### Installation Steps
+
+#### Clone the package
 
 1. Create a folder with the chosen name
 2. Run `$ git clone <package url> .`
 
-### install dependencies
+#### install dependencies
 
 1. Go to the package root folder
 2. Run `$ npm install`
 
-### App Settings
+#### App Settings
 
 1. Create `.env` file and copy data from `./env_example` 
 2. Update settings according to your needs and environment specifications
 
-## Running the package
+
+### Running the package
 
 `$ npm start`
