@@ -15,7 +15,8 @@
     "check:security:dev": "snyk wizard",
     "check:modules": "./node_modules/retire/bin/retire",
     "check": "npm run check:security && npm run check:modules && npm run lint",
-    "command:create_admin": "node ./commands/user/admin/createAdminUser"
+    "command:create_admin": "node ./commands/user/admin/createAdminUser",
+    "postinstall": "npm install pm2"
   },
   "config": {
     "ghooks": {
