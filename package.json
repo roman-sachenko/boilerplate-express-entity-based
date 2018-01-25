@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "Express based structure and entity generator",
   "main": "server",
+  "engines": {
+    "node": "9.4.0"
+  },
   "scripts": {
     "test": "jest ./test/unit/index.js && ./node_modules/mocha/bin/mocha ./test/endToEnd --exit",
     "lint": "./node_modules/.bin/eslint  . *.js",
