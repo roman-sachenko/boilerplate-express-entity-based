@@ -12,7 +12,7 @@ module.exports = {
 
   JWT_SECRET: 'take.a.look.to.the.sky.just.before.you.die',
 
-  DB_CONNECTION_STRING: 'mongodb://mongo_user:mongo_pass@mongo_server/mongo_db',
+  DB_CONNECTION_STRING: 'mongodb://localhost:27017/mongo_local_db',
 
   AWS_REGION: 'us-west-2',
   AWS_ACCESS_KEY_ID: 'yourKey',
