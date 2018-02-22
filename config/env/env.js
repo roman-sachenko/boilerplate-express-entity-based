@@ -1,5 +1,5 @@
 module.exports = {
-  NODE_ENV: 'local',
+  NODE_ENV: '',
   ENV_PORT: 3000,
   NODE_INSTANCES_COUNT: 1,
 

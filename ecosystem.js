@@ -19,9 +19,9 @@ module.exports = {
       merge_logs: true,
       cwd: './',
       env: require('./config/env/env.js'),
-      env_local: require('./config/env/env.local'),
-      env_staging: require('./config/env/env.staging'),
-      env_production: require('./config/env/env.production'),
+      env_local: require('./config/env/env.local') || {},
+      env_staging: require('./config/env/env.staging') || {},
+      env_production: require('./config/env/env.production') || {},
     },
   ],
 };
