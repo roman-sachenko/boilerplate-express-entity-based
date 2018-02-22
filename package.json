@@ -7,7 +7,9 @@
     "test": "jest ./test/unit/index.js && ./node_modules/mocha/bin/mocha ./test/endToEnd --exit",
     "lint": "./node_modules/.bin/eslint  . *.js",
     "lint:fix": "./node_modules/.bin/eslint  . *.js --fix",
-    "start": "./node_modules/pm2/bin/pm2 start ecosystem.config.json",
+    "start:local": "./node_modules/pm2/bin/pm2 start ecosystem.config.json --env local",
+    "start:staging": "./node_modules/pm2/bin/pm2 start ecosystem.config.json --env staging",
+    "start:production": "./node_modules/pm2/bin/pm2 start ecosystem.config.json --env production",
     "check:security": "./node_modules/nsp/bin/nsp check",
     "check:security:dev": "snyk wizard",
     "check:modules": "./node_modules/retire/bin/retire",
@@ -50,7 +52,6 @@
   },
   "devDependencies": {
     "chai": "^4.1.2",
-    "cool-ascii-faces": "^1.3.4",
     "eslint": "^4.14.0",
     "eslint-config-airbnb": "^16.1.0",
     "eslint-plugin-import": "^2.8.0",

@@ -33,6 +33,7 @@ const app = new App();
 const helmet = require('helmet');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
+const { NotFound } = require(`${basePath}/app/utils/apiErrors`);
 // const cors = require('cors');
 
 /**
@@ -62,7 +63,7 @@ app
     customValidators,
   }))
   // .use(cors({}))
-  .use('/api/v1', require(`${basePath}/routes/v1`))
+  .use('/', require(`${basePath}/routes/`))
   .use(routeNotFoundHandler)
   .use(mainErrorHandler);
 
