@@ -162,9 +162,16 @@ Install MongoDB https://docs.mongodb.com/manual/installation/
 
 ### App Settings
 
-1. Create `.env` file and copy data from `./env_example` 
+1. Create `config/env/env.local` file and copy data from `config/env/env.local_example` 
+2. Update settings according to your needs and environment specifications
+
+### Test Environment Settings
+
+1. Create `config/env/.env.test` file and copy data from `config/env/.env.test_example` 
 2. Update settings according to your needs and environment specifications
 
 ## Running the package
 
-`$ npm start`
+`$ npm start:[environment]`
+
+Example: `$ npm start:local`
