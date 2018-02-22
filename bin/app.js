@@ -34,7 +34,7 @@ const helmet = require('helmet');
 const expressValidator = require('express-validator');
 const bodyParser = require('body-parser');
 const { NotFound } = require(`${basePath}/app/utils/apiErrors`);
-// const cors = require('cors');
+const cors = require('cors');
 
 /**
  * Starts app server
@@ -62,7 +62,7 @@ app
   .use(expressValidator({
     customValidators,
   }))
-  // .use(cors({}))
+  .use(cors({}))
   .use('/', require(`${basePath}/routes/`))
   .use(routeNotFoundHandler)
   .use(mainErrorHandler);
