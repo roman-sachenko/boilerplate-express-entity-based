@@ -1,4 +1,4 @@
 node_modules
 logs
-/config/env/env/env.local.js
+./config/env/env.local.js
 
