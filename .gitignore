@@ -1,4 +1,7 @@
 node_modules
-.env
 logs
-./config/app/env/local.js
+config/env/env.local.js
+config/env/.env.test
+
+
+

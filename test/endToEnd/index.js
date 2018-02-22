@@ -4,8 +4,7 @@ global.basePath = path.normalize(`${__dirname}/../..`);
 /**
  * Parses .env files to retrieve config variables
  */
-require('dotenv-safe').load({ path: `${basePath}/.env.test`, sample: `${basePath}/.env_example` });
-
+require('dotenv-safe').load({ path: `${basePath}/config/env/.env.test`, sample: `${basePath}/config/env/.env.test_example` });
 /**
  * Require Application (start app)
  */
