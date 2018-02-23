@@ -177,6 +177,6 @@ Install MongoDB https://docs.mongodb.com/manual/installation/
 
 ### Running the package
 
-`$ npm start:[environment]`
+`$ npm run start:[environment]`
 
-Example: `$ npm start:local`
+Example: `$ npm run start:local`
