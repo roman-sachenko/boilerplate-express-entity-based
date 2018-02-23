@@ -20,7 +20,7 @@
   "eslintIgnore": [
     "./node_modules",
     ".gitignore",
-    "ecosystem.js"
+    "ecosystem.config.js"
   ],
   "config": {
     "ghooks": {
@@ -38,7 +38,6 @@
     "dotenv": "^4.0.0",
     "dotenv-safe": "^4.0.4",
     "express": "^4.15.3",
-    "express-session": "^1.15.3",
     "express-validator": "^4.3.0",
     "helmet": "^3.6.1",
     "http-status": "^1.0.1",
@@ -48,10 +47,7 @@
     "mkdirp": "^0.5.1",
     "moment": "^2.18.1",
     "mongoose": "^4.10.4",
-    "nodemon": "^1.12.5",
     "passport": "^0.3.2",
-    "passport-facebook": "^2.1.1",
-    "passport-google": "^0.3.0",
     "passport-local": "^1.0.0",
     "shelljs": "^0.7.8",
     "winston": "^2.3.1",
