@@ -4,7 +4,7 @@ module.exports = {
   },
 
   env: {
-    PORT: process.env.NODE_SERVER_PORT || 3000,
+    PORT: process.env.NODE_SERVER_PORT,
     instancesCount: parseInt(process.env.NODE_INSTANCES_COUNT, 10) || 1,
   },
 
