@@ -1,7 +1,19 @@
+
+const envMain = require('./config/env/env.js');
+const envStaging = require('./config/env/env.staging');
+const envProduction = require('./config/env/env.production');
+
+let envLocal = {};
+try {
+  envLocal = require('./config/env/env.local');
+} catch (err) {
+  envLocal = {};
+}
+
 module.exports = {
   apps: [
     {
-      name: 'express-lemon',
+      name: 'true-peopling-api',
       script: './bin/server.js',
       args: [
         '--toto=heya coco',
@@ -18,10 +30,10 @@ module.exports = {
       node_args: '',
       merge_logs: true,
       cwd: './',
-      env: require('./config/env/env.js'),
-      env_local: require('./config/env/env.local') || {},
-      env_staging: require('./config/env/env.staging') || {},
-      env_production: require('./config/env/env.production') || {},
+      env: envMain,
+      env_local: envLocal,
+      env_staging: envStaging,
+      env_production: envProduction,
     },
   ],
 };

@@ -31,6 +31,7 @@
   "author": "Roman Sachenko",
   "license": "ISC",
   "dependencies": {
+    "aws-sdk": "^2.201.0",
     "bcrypt": "^1.0.2",
     "body-parser": "^1.17.2",
     "connect-redis": "^3.3.0",
