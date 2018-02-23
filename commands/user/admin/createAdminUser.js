@@ -2,29 +2,31 @@
  * Script to create admin user
  * @type {string}
  */
-/**
-* Allows the system to read .env file
-*/
-require('dotenv').config();
 
 /**
  * Env configuration
  */
-const path = require('path');
+if (!process.env.NODE_ENV) {
+  throw new Error('Environment is not specified, NODE_ENV is undefined. Run script with a specific environment (NODE_ENV=env_name)');
+}
 
+const path = require('path');
 global.basePath = path.normalize(`${__dirname}/../../..`);
-process.env.NODE_ENV = process.env.NODE_ENV || 'local';
 
 require(`${basePath}/app/models/User.model`);
+
+const mainEnvVariables = require(`${basePath}/config/env/env`);
+const envBasedVariables = require(`${basePath}/config/env/env.${process.env.NODE_ENV}`);
+Object.assign(process.env, mainEnvVariables, envBasedVariables);
 
 /**
  * Include Services
  * @type {*}
  */
 const { UserService, DbService } = require(`${basePath}/app/services`);
-const appConfig = require(`${basePath}/config/app`);
 
-const dbService = new DbService({ connectionString: appConfig.db.connectionString });
+
+const dbService = new DbService({ connectionString: process.env.DB_CONNECTION_STRING });
 
 const newAdminData = require('./config').adminData;
 
