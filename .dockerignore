@@ -1,0 +1,8 @@
+node_modules
+containerization
+logs
+config/env/env.local.js
+docker-compose.yml
+Dockerfile
+.git
+.gitignore

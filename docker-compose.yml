@@ -39,7 +39,7 @@ services:
     volumes:
       - .:/app/
     ### Set the env vars from file
-    env_file: .env
+    #env_file: .env
     ### Overide default entrypoint of image
     entrypoint: /bin/sh /installstart.sh
     ### Start after "mongo" service
