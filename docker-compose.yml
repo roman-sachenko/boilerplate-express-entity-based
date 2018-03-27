@@ -1,0 +1,70 @@
+### docker-compose format version
+version: "3"
+
+### container's configuration
+services:
+  ### service name
+  nginx:
+    ### Maybe different that service name
+    container_name: nginx
+    ### Restart policy
+    restart: unless-stopped
+    ### Base image
+    image: nginx:latest
+    ### Local file -> mounted inside the running container
+    volumes:
+      - ./containerization/nginx/proxy.conf:/etc/nginx/conf.d/default.conf
+    ### Maps host's 8080 -> 80 container's ports
+    ports:
+      - "8080:80"
+    ### Use default Docker network
+    networks:
+      - default
+    ### Start after "node" service
+    depends_on:
+      - node
+   
+  node:
+    container_name: nodejs
+    restart: on-failure
+    ### Build from local Dockerfile
+    build: .
+    ### Expose port (overwrites directive from Dockerfile)
+    expose:
+      - "8000"
+    #ports:
+    #  - "8000:8000"
+
+    ### Mount current dir to /app the running container
+    volumes:
+      - .:/app/
+    ### Set the env vars from file
+    env_file: .env
+    ### Overide default entrypoint of image
+    entrypoint: /bin/sh /installstart.sh
+    ### Start after "mongo" service
+    depends_on:
+      - mongo
+
+  mongo:
+    image: mongo
+    container_name: mongodb
+    restart: always
+    volumes:
+      ### Mount docker volume into /data/db dir
+#      - mongodb:/data/db
+      - ./containerization/mongodbdir:/data/db
+    expose: 
+      - "27017"
+    ports:
+      - "27017:27017"
+      ### Check the that mongodb is up and ready to serve connections
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:27017"]
+      interval: 10s
+      timeout: 1s
+      retries: 10    
+
+### Volume section    
+volumes:
+   mongodb:
